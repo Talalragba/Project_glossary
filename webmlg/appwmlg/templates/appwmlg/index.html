@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page - Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e0f7fa; /* Bleu ciel */
+        }
+
+        header {
+            background-color: #007bb8; /* Bleu foncé */
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .main-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .main-content h1 {
+            color: #005f7f; /* Bleu moyen */
+        }
+
+        .main-content p {
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+            display: inline-block;
+            text-align: left;
+            background-color: #ffffff; /* Fond blanc pour le formulaire */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Ombre légère pour le formulaire */
+        }
+
+        form input[type="text"],
+        form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #007bb8; /* Bord bleu foncé */
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bb8; /* Bleu foncé */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #005f7f; /* Bleu moyen */
+        }
+
+        .show-password {
+            margin: 10px 0;
+        }
+    </style>
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById("password");
+            const passwordCheckbox = document.getElementById("show-password");
+            // Toggle the type attribute
+            passwordInput.type = passwordCheckbox.checked ? "text" : "password";
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Multilingual Glossary</h1>
+    </header>
+
+    <div class="main-content">
+        <h1>Login</h1>
+        <p>Please enter your username and password to log in.</p>
+
+        <!-- Login form -->
+        <form action="/login" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+            <div class="show-password">
+                <input type="checkbox" id="show-password" onclick="togglePassword()">
+                <label for="show-password">Show Password</label>
+            </div>
+            <a href="{% url 'search' %}"> <button type="button">Login</button> </a> 
+        </form>
+    </div>
+</body>
+</html>

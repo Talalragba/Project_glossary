@@ -5,14 +5,12 @@ from pymongo import MongoClient
 import pymongo
 
 # Create your views here.
+"""
 def index(request):
     return render(request, 'appwmlg/index.html')
-
-def search(request):
+"""
+def search_view(request):
     return render(request, 'appwmlg/searchpage.html')
-
-
-
 
 
 # Connect to MongoDB
@@ -20,7 +18,7 @@ client = MongoClient('mongodb://localhost:27017/')
 dbft = client['dbft']
 users_collection = dbft['users']
 
-def login_view(request):
+def index_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -28,7 +26,16 @@ def login_view(request):
         print(f"Attempting login with username: {username}")  # Debugging line
 
         user = users_collection.find_one({"username": username, "password": password})
-
+        print("###################################")
+        print(user)
+        print("###################################")
+        if user : 
+            if user['occupation'] == "Software Engineer":
+                print("role:", user['occupation'])
+            print("###################################")
+            print("Languages:", user['languages'][0])
+            print("###################################")
+        print("###################################")
         if user:
             print("Login successful!")  # Debugging line
             return redirect('search')  # Ensure this matches your URL pattern name for the search page

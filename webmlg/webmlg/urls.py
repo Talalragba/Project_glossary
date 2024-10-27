@@ -3,6 +3,7 @@ from django.urls import path
 #from appwmlg.views import index
 from appwmlg.views import search_view
 from appwmlg.views import index_view
+from appwmlg.views import logout_view
 
 
 
@@ -11,6 +12,7 @@ urlpatterns = [
     path('',index_view, name ='login'),
     path('search/',search_view, name='search'),
     #path('admin/', admin.site.urls),
+    path('logout/', logout_view, name='logout'),
 ]
 
 

@@ -89,7 +89,29 @@
         <h1>Login</h1>
         <p>Please enter your username and password to log in.</p>
 
-        <!-- Login form -->
+        <form action="" method="post">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        
+            <div class="show-password">
+                <input type="checkbox" id="show-password" onclick="togglePassword()">
+                <label for="show-password">Show Password</label>
+            </div>
+        
+            <button type="submit">Login</button>
+            {% if messages %}
+                {% for message in messages %}
+                    <p style="color: red;">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+            
+        </form> 
+
+        <!-- Login form 
 
         <form action="" method="post">
             {% csrf_token %}
@@ -109,7 +131,8 @@
             {% if error %}
             <p style="color: red;">{{ error }}</p>
             {% endif %}
-        </form>        
+        </form>   
+-->     
 <!--        <form action="/login" method="post">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" placeholder="Enter your username" required>

@@ -17,7 +17,7 @@ def index(request):
 
 #@login_required(login_url="login")
 def search_view(request):
-    if "username" not in request.session:
+    if request.session.get("logedUser") != True :
         return redirect("login")  # Redirect to login if user is not authenticated
     return render(request, 'appwmlg/searchpage.html')
 
@@ -30,7 +30,7 @@ def logout_view(request):
 # Connect to MongoDB
 client = MongoClient('mongodb://localhost:27017/')
 dbft = client['dbft']
-users_collection = dbft['users']
+user_collection = dbft['userCollection']
 
 def index_view(request):
     if request.method == "POST":
@@ -39,23 +39,23 @@ def index_view(request):
 
         print(f"Attempting login with username: {username}")  # Debugging line
 
-        user = users_collection.find_one({"username": username, "password": password})
+        user = user_collection.find_one({"UserName": username, "Password": password})
         print("###################################")
         print(user)
         print("###################################")
         if user : 
-            if user['occupation'] == "Software Engineer":
-                print("role:", user['occupation'])
+            if user['UserRole'] == "Admin":
+                print("Role:", user['UserRole'])
             print("###################################")
-            print("Languages:", user['languages'][0])
+            print("Languages:", user['UserLanguages'][0])
             print("###################################")
         print("###################################")
         if user:
             print("Login successful!")  # Debugging line
             print("Username:", username)
-            print(request.session.get("username"))
-            request.session["username"] = username
-            print(request.session.get("username"))
+            print(request.session.get("logedUser"))
+            request.session["logedUser"] = True
+            print(request.session.get("logedUser"))
             print(request.session.get("blabla"))
             return redirect('search')  # Ensure this matches your URL pattern name for the search page
         else:
@@ -69,12 +69,12 @@ def index_view(request):
 
 #######################################
 
-definition_collection = dbft['definition'] # Use your actual collection name
+eng_definition_draft_collection = dbft['engDefinitionDraftCollection'] # Use your actual collection name
 
 
 def add_definition(request):
     
-    if "username" not in request.session:
+    if request.session.get("logedUser") != True:
         return redirect("login")
     elif request.method == 'POST':
         term = request.POST.get('term')
@@ -82,7 +82,7 @@ def add_definition(request):
         example = request.POST.get('example')
         
         # Add to MongoDB
-        definition_collection.insert_one({
+        eng_definition_draft_collection.insert_one({
             "term": term,
             "definition": definition,
             "example": example

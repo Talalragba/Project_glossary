@@ -1,0 +1,35 @@
+<!-- define.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter une Nouvelle Définition</title>
+    <style>
+        /* Add your custom styles here */
+    </style>
+</head>
+<body>
+
+<button onclick="location.href='{% url 'logout' %}'">Logout</button>
+
+<div class="form-container">
+    <h2>Ajouter une Nouvelle Définition</h2>
+    <form action="{% url 'add_definition' %}" method="post">
+        {% csrf_token %}
+        
+        <label for="term">Terme :</label>
+        <input type="text" id="term" name="term" required>
+
+        <label for="definition">Définition :</label>
+        <textarea id="definition" name="definition" rows="4" required></textarea>
+
+        <label for="example">Exemple :</label>
+        <textarea id="example" name="example" rows="3" required></textarea>
+
+        <button type="submit">Ajouter</button>
+    </form>
+</div>
+
+</body>
+</html>

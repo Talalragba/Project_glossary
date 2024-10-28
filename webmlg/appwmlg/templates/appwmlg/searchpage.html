@@ -13,8 +13,8 @@
 
 <!--button onclick="window.location.href='{% url 'logout' %}'">Logout</button-->
 <button onclick="location.href='{% url 'logout' %}'">Logout</button>
-
-<button class="add-button" onclick="window.location.href='/add-page'">Add</button>
+<button onclick="location.href='{% url 'add_definition' %}'">Add_definition</button>
+<!--<button class="add-button" onclick="window.location.href='/add-page'">Add</button>-->
 
 <div class="search-container">
     <input type="text" id="searchInput" placeholder="Rechercher...">

@@ -65,3 +65,30 @@ def index_view(request):
             #return render(request, 'appwmlg/index.html', {"error": "Invalid username or password"})
 
     return render(request, 'appwmlg/index.html')
+
+
+#######################################
+
+definition_collection = dbft['definition'] # Use your actual collection name
+
+
+def add_definition(request):
+    
+    if "username" not in request.session:
+        return redirect("login")
+    elif request.method == 'POST':
+        term = request.POST.get('term')
+        definition = request.POST.get('definition')
+        example = request.POST.get('example')
+        
+        # Add to MongoDB
+        definition_collection.insert_one({
+            "term": term,
+            "definition": definition,
+            "example": example
+        })
+        
+        return redirect('search')  # Redirect to search page or another page after submission
+
+    else :
+        return render(request, 'appwmlg/define.html')

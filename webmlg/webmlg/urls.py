@@ -4,6 +4,8 @@ from django.urls import path
 from appwmlg.views import search_view
 from appwmlg.views import index_view
 from appwmlg.views import logout_view
+##########
+from appwmlg.views import add_definition
 
 
 
@@ -13,6 +15,8 @@ urlpatterns = [
     path('search/',search_view, name='search'),
     #path('admin/', admin.site.urls),
     path('logout/', logout_view, name='logout'),
+    ###################################
+    path('definition/', add_definition, name='add_definition'),
 ]
 
 

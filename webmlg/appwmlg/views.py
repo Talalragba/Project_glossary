@@ -9,6 +9,9 @@ from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
+import secrets
+from django.core.mail import send_mail
+
 # Create your views here.
 """
 def index(request):
@@ -92,3 +95,47 @@ def add_definition(request):
 
     else :
         return render(request, 'appwmlg/define.html')
+
+
+
+############################
+
+
+def add_user(request):
+
+    if request.session.get("logedUser") != True:
+        return redirect("login")
+    elif request.method == 'POST':
+        username = request.POST.get('username')
+        hire_date = request.POST.get('hire_date')
+        user_role = request.POST.get('user_role')
+        user_languages = request.POST.getlist('languages')  # Get multiple selections as a list
+        user_email = request.POST.get('user_email')
+        born_date = request.POST.get('born_date')
+
+        # Generate a random password
+        password = secrets.token_urlsafe(8)  # Generates an 8-character password
+
+        # Insert into MongoDB
+        user_collection.insert_one({
+            "UserName": username,
+            "HireDate": hire_date,
+            "UserRole": user_role,
+            "UserLanguages": user_languages,
+            "UserEmail": user_email,
+            "BornDate": born_date,
+            "Password": password
+        })
+
+        # Send the congratulatory email with the password
+        send_mail(
+            'Welcome to the Glossary App!',
+            f'Hello {username},\n\nCongratulations on joining! Here is your access information:\n\nUsername: {username}\nPassword: {password}\n\nPlease keep this information safe.\n\nBest regards,\nThe Glossary App Team',
+            'talaltago@gmail.com',  # Replace with your email
+            [user_email],
+            fail_silently=False,
+        )
+
+        return redirect('search')  # Redirect after submission
+    else :
+        return render(request, 'appwmlg/addUsers.html')

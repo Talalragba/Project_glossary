@@ -6,6 +6,7 @@ from appwmlg.views import index_view
 from appwmlg.views import logout_view
 ##########
 from appwmlg.views import add_definition
+from appwmlg.views import add_user
 
 
 
@@ -16,7 +17,8 @@ urlpatterns = [
     #path('admin/', admin.site.urls),
     path('logout/', logout_view, name='logout'),
     ###################################
-    path('definition/', add_definition, name='add_definition'),
+    path('definition/', add_definition, name='addDefinition'),
+    path('addUser/', add_user, name='addUser'),
 ]
 
 

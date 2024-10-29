@@ -1,0 +1,59 @@
+<!-- add_user.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un Utilisateur</title>
+    <style>
+        /* Add your custom styles here */
+    </style>
+</head>
+<body>
+
+<button onclick="location.href='{% url 'logout' %}'">Logout</button>
+
+<div class="form-container">
+    <h2>Ajouter un Utilisateur</h2>
+    <form action="{% url 'addUser' %}" method="post">
+        {% csrf_token %}
+
+        <!-- UserName field -->
+        <label for="username">Nom d'utilisateur :</label>
+        <input type="text" id="username" name="username" pattern="[A-Za-z]{1,30}" title="Only Latin characters, max 30" required>
+
+        <!-- HireDate field -->
+        <label for="hire_date">Date d'embauche :</label>
+        <input type="date" id="hire_date" name="hire_date" required>
+
+        <!-- UserRole field -->
+        <label for="user_role">Rôle de l'utilisateur :</label>
+        <select id="user_role" name="user_role" required>
+            <option value="user">Utilisateur</option>
+            <option value="admin">Administrateur</option>
+            <option value="moderator">Modérateur</option>
+        </select>
+
+        <!-- UserLanguages field -->
+        <label>Langues :</label><br>
+        <input type="checkbox" id="lang_eng" name="languages" value="Eng">
+        <label for="lang_eng">Anglais</label><br>
+        <input type="checkbox" id="lang_fr" name="languages" value="Fr">
+        <label for="lang_fr">Français</label><br>
+        <input type="checkbox" id="lang_de" name="languages" value="De">
+        <label for="lang_de">Allemand</label><br>
+
+        <!-- UserEmail field -->
+        <label for="user_email">Email :</label>
+        <input type="email" id="user_email" name="user_email" required>
+
+        <!-- BornDate field -->
+        <label for="born_date">Date de Naissance :</label>
+        <input type="date" id="born_date" name="born_date" required>
+
+        <button type="submit">Ajouter</button>
+    </form>
+</div>
+
+</body>
+</html>

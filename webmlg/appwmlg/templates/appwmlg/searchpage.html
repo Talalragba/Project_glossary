@@ -7,6 +7,11 @@
     <title>Barre de Recherche - Thème Bleu</title>
     <style>
         /* Your existing styles */
+        .result-message {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -18,8 +23,22 @@
 <!--<button class="add-button" onclick="window.location.href='/add-page'">Add</button>-->
 
 <div class="search-container">
-    <input type="text" id="searchInput" placeholder="Rechercher...">
-    <div class="results" id="resultsContainer"></div>
+    <form method="GET" action="{% url 'search' %}">
+        <input type="text" id="searchInput" name="acronym" placeholder="Rechercher..." required>
+        <button type="submit">Search</button>
+    </form>
+    
+    <div class="results" id="resultsContainer">
+        {% if definition %}
+            <div class="result-message">
+                <strong>Définition:</strong> {{ definition }}
+            </div>
+        {% elif message %}
+            <div class="result-message">
+                {{ message }}
+            </div>
+        {% endif %}
+    </div>
 </div>
 
 </body>

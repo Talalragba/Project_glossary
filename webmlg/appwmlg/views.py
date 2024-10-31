@@ -12,6 +12,9 @@ from django.contrib.auth.decorators import login_required
 import secrets
 from django.core.mail import send_mail
 
+from django.utils import timezone
+
+
 # Create your views here.
 """
 def index(request):
@@ -19,10 +22,54 @@ def index(request):
 """
 
 #@login_required(login_url="login")
+
+'''
+from django.shortcuts import render
+from django.conf import settings
+from datetime import datetime
+from pymongo import MongoClient
+
+# Set up MongoDB client
+client = MongoClient(settings.MONGODB_URI)
+db = client[settings.MONGO_DB_NAME]  # Use your actual database name here
+
+def search_acronym(request):
+    definition = None
+    error_message = None
+    
+    if 'acronym' in request.GET:
+        acronym = request.GET.get('acronym').strip()
+        
+        # Access the collection and search for the document
+        collection = db['engDefinitionDraftCollection']
+        document = collection.find_one({"acronym": acronym})
+        
+        if document:
+            definition = document.get("definition")  # Get the definition if the document exists
+        else:
+            error_message = "The acronym doesn't exist."
+            #messages.error(request, "Invalid credentials")
+    
+    return render(request, 'searchpage.html', {'definition': definition, 'error_message': error_message})
+
+'''
 def search_view(request):
     if request.session.get("logedUser") != True :
         return redirect("login")  # Redirect to login if user is not authenticated
-    return render(request, 'appwmlg/searchpage.html')
+    elif request.method == "GET":
+        docDef = None
+        message = None
+        definition = None
+        acronym = request.GET.get('acronym')
+        docDef = eng_definition_draft_collection.find_one({"Acronym": acronym})
+        if docDef:
+            definition = docDef["Definition"]  
+        else:
+            message = "The acronym doesn't exist."
+        return render(request, 'appwmlg/searchpage.html', {'definition': definition, 'message': message})
+
+    else :
+        return render(request, 'appwmlg/searchpage.html', {'definition': definition, 'message': message})
 
 
 def logout_view(request):
@@ -58,8 +105,9 @@ def index_view(request):
             print("Username:", username)
             print(request.session.get("logedUser"))
             request.session["logedUser"] = True
+            request.session["username"] = user['UserName']
             print(request.session.get("logedUser"))
-            print(request.session.get("blabla"))
+            print(request.session.get("username"))
             return redirect('search')  # Ensure this matches your URL pattern name for the search page
         else:
             messages.error(request, "Invalid credentials")
@@ -74,26 +122,34 @@ def index_view(request):
 
 eng_definition_draft_collection = dbft['engDefinitionDraftCollection'] # Use your actual collection name
 
-
 def add_definition(request):
     
     if request.session.get("logedUser") != True:
         return redirect("login")
     elif request.method == 'POST':
-        term = request.POST.get('term')
+        acronym = request.POST.get('acronym')
         definition = request.POST.get('definition')
-        example = request.POST.get('example')
+        source = request.POST.get('source')
+        industry = request.POST.getlist('industry')  
+        definition_submission_date = timezone.now()  
+        definition_author = request.session.get("username")
         
         # Add to MongoDB
         eng_definition_draft_collection.insert_one({
-            "term": term,
-            "definition": definition,
-            "example": example
+            "Acronym": acronym,
+            "Definition": definition,
+            "Source": source,
+            "Industry": industry,
+            "DefinitionSubmissionDate": definition_submission_date,
+            "DefinitionAuthor": definition_author,
+            "Approvers": [],
+            "ApproversNumber": 0 
         })
         
         return redirect('search')  # Redirect to search page or another page after submission
 
     else :
+        print(request.session.get("username"))
         return render(request, 'appwmlg/define.html')
 
 

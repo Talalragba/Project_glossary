@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter un Utilisateur</title>
+    <title>Add user</title>
     <style>
         /* Add your custom styles here */
     </style>
@@ -14,44 +14,45 @@
 <button onclick="location.href='{% url 'logout' %}'">Logout</button>
 
 <div class="form-container">
-    <h2>Ajouter un Utilisateur</h2>
+    <h2>Add new user</h2>
     <form action="{% url 'addUser' %}" method="post">
         {% csrf_token %}
 
         <!-- UserName field -->
-        <label for="username">Nom d'utilisateur :</label>
+        <label for="username">Username :</label>
         <input type="text" id="username" name="username" pattern="[A-Za-z]{1,30}" title="Only Latin characters, max 30" required>
 
         <!-- HireDate field -->
-        <label for="hire_date">Date d'embauche :</label>
+        <label for="hire_date">Hire date :</label>
         <input type="date" id="hire_date" name="hire_date" required>
 
         <!-- UserRole field -->
-        <label for="user_role">Rôle de l'utilisateur :</label>
+        <label for="user_role">User role :</label>
         <select id="user_role" name="user_role" required>
-            <option value="user">Utilisateur</option>
-            <option value="admin">Administrateur</option>
-            <option value="moderator">Modérateur</option>
+            <option value="admin">Admin</option>
+            <option value="moderator">moderator</option>
+            <option value="user">User</option>
+
         </select>
 
         <!-- UserLanguages field -->
-        <label>Langues :</label><br>
+        <label>Languages :</label><br>
         <input type="checkbox" id="lang_eng" name="languages" value="Eng">
-        <label for="lang_eng">Anglais</label><br>
+        <label for="lang_eng">English</label><br>
         <input type="checkbox" id="lang_fr" name="languages" value="Fr">
-        <label for="lang_fr">Français</label><br>
+        <label for="lang_fr">French</label><br>
         <input type="checkbox" id="lang_de" name="languages" value="De">
-        <label for="lang_de">Allemand</label><br>
+        <label for="lang_de">German</label><br>
 
         <!-- UserEmail field -->
         <label for="user_email">Email :</label>
         <input type="email" id="user_email" name="user_email" required>
 
         <!-- BornDate field -->
-        <label for="born_date">Date de Naissance :</label>
+        <label for="born_date">Born date :</label>
         <input type="date" id="born_date" name="born_date" required>
 
-        <button type="submit">Ajouter</button>
+        <button type="submit">Add</button>
     </form>
 </div>
 

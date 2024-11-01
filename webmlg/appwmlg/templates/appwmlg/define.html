@@ -14,20 +14,20 @@
 <button onclick="location.href='{% url 'logout' %}'">Logout</button>
 
 <div class="form-container">
-    <h2>Ajouter une Nouvelle Définition</h2>
+    <h2>Add a new definition</h2>
     <form action="{% url 'define' %}" method="post">
         {% csrf_token %}
         
-        <label for="acronym">Acronyme :</label>
+        <label for="acronym">Acronym :</label>
         <input type="text" id="acronym" name="acronym" required>
 
-        <label for="definition">Définition :</label>
+        <label for="definition">Definition :</label>
         <textarea id="definition" name="definition" rows="4" required></textarea>
 
         <label for="source">Source :</label>
         <input type="text" id="source" name="source" required>
 
-        <label for="industry">Industrie :</label>
+        <label for="industry">Industry :</label>
         <select id="industry" name="industry" multiple required>
             <option value="pharma">Pharma</option>
             <option value="electrical engineering">Electrical Engineering</option>
@@ -36,7 +36,7 @@
             <!-- Add more industries as needed -->
         </select>
 
-        <button type="submit">Ajouter</button>
+        <button type="submit">Submit</button>
     </form>
 </div>
 

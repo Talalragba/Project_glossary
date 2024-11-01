@@ -56,12 +56,18 @@ def search_acronym(request):
 def search_view(request):
     if request.session.get("logedUser") != True :
         return redirect("login")  # Redirect to login if user is not authenticated
-    elif request.method == "GET":
+    elif 'acronym' in request.GET:
+        #request.method == "GET":
         docDef = None
         message = None
         definition = None
         acronym = request.GET.get('acronym')
         docDef = eng_definition_draft_collection.find_one({"Acronym": acronym})
+        
+        print("#################################################")
+        print("je suis la")
+        print(message)
+
         if docDef:
             definition = docDef["Definition"]  
         else:
@@ -69,7 +75,7 @@ def search_view(request):
         return render(request, 'appwmlg/searchpage.html', {'definition': definition, 'message': message})
 
     else :
-        return render(request, 'appwmlg/searchpage.html', {'definition': definition, 'message': message})
+        return render(request, 'appwmlg/searchpage.html')
 
 
 def logout_view(request):
@@ -82,7 +88,7 @@ client = MongoClient('mongodb://localhost:27017/')
 dbft = client['dbft']
 user_collection = dbft['userCollection']
 
-def index_view(request):
+def login_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -122,7 +128,7 @@ def index_view(request):
 
 eng_definition_draft_collection = dbft['engDefinitionDraftCollection'] # Use your actual collection name
 
-def add_definition(request):
+def define_view(request):
     
     if request.session.get("logedUser") != True:
         return redirect("login")
@@ -157,7 +163,7 @@ def add_definition(request):
 ############################
 
 
-def add_user(request):
+def addUser_view(request):
 
     if request.session.get("logedUser") != True:
         return redirect("login")
@@ -194,4 +200,4 @@ def add_user(request):
 
         return redirect('search')  # Redirect after submission
     else :
-        return render(request, 'appwmlg/addUsers.html')
+        return render(request, 'appwmlg/addUser.html')

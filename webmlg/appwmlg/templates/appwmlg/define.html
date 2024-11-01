@@ -14,7 +14,7 @@
 <button onclick="location.href='{% url 'logout' %}'">Logout</button>
 
 <div class="form-container">
-    <h2>Add a new definition</h2>
+    <h2>Add new definition</h2>
     <form action="{% url 'define' %}" method="post">
         {% csrf_token %}
         

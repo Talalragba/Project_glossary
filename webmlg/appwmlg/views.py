@@ -112,6 +112,7 @@ def login_view(request):
             print(request.session.get("logedUser"))
             request.session["logedUser"] = True
             request.session["username"] = user['UserName']
+            request.session["userRole"] = user['UserRole']
             print(request.session.get("logedUser"))
             print(request.session.get("username"))
             return redirect('search')  # Ensure this matches your URL pattern name for the search page
@@ -155,7 +156,7 @@ def define_view(request):
         return redirect('search')  # Redirect to search page or another page after submission
 
     else :
-        print(request.session.get("username"))
+        #print(request.session.get("username"))
         return render(request, 'appwmlg/define.html')
 
 
@@ -201,3 +202,41 @@ def addUser_view(request):
         return redirect('search')  # Redirect after submission
     else :
         return render(request, 'appwmlg/addUser.html')
+
+
+
+##########################################
+
+def users_view(request):
+    if request.session.get('logedUser') != True:
+        return redirect('login')
+    else : 
+        users = list(user_collection.find()) 
+        print(users)
+        return render(request, 'appwmlg/users.html', {'users': users})       
+
+
+def user_view(request, username):
+    if request.session.get('logedUser') != True:
+        return redirect('login')
+    else :
+        user = user_collection.find_one({"UserName": username})
+        return render(request, 'appwmlg/user.html', {'user': user})
+    
+    
+def user_update_view(request, username):
+    if request.method == 'POST':
+        newRole = request.POST.get('role')
+        newEmail = request.POST.get('email')
+
+        # Update the user in the database
+        user_collection.update_one({"UserName": username}, {"$set": {"UserRole": newRole, "UserEmail": newEmail}})
+        return redirect('search') 
+
+
+def user_delete_view(request, username):
+    if request.session.get('logedUser') != True:
+        return redirect('login')
+    elif request.method == 'POST':
+        user_collection.delete_one({"UserName": username})
+        return redirect('search')

@@ -12,7 +12,14 @@
 <body>
 
 <button onclick="location.href='{% url 'logout' %}'">Logout</button>
+<button onclick="location.href='{% url 'addUser' %}'">Add new user</button>
 
+<h1>Users List</h1>
+<ul>
+    {% for user in users %}
+    <li><a href="{% url 'user' user.UserName %}">{{ user.UserName }}</a></li>
+    {% endfor %}
+</ul>
 
 </body>
 </html>

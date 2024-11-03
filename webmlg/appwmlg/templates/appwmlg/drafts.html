@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Definition Draft</title>
+    <title>Definitions Draft</title>
     <style>
         /* Add any necessary styles here */
     </style>
@@ -13,6 +13,12 @@
 
 <button onclick="location.href='{% url 'logout' %}'">Logout</button>
 
+<h1>Draft List</h1>
+<ul>
+    {% for draft in drafts %}
+    <li><a href="{% url 'draft' draft.Acronym %}">{{ draft.Acronym }}</a></li>
+    {% endfor %}
+</ul>
 
 </body>
 </html>

@@ -1,0 +1,31 @@
+<!-- define.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Definition Draft</title>
+    <style>
+        /* Add any necessary styles here */
+    </style>
+</head>
+<body>
+
+<button onclick="location.href='{% url 'logout' %}'">Logout</button>
+
+<p><strong>Acronym:</strong> {{ draft.Acronym }}</p>
+<p><strong>Definition:</strong> {{ draft.Definition }}</p>
+<p><strong>Source:</strong><a href="{{ draft.Source }}">{{ draft.Source }}</a></p>
+<p><strong>Definition Submission Date:</strong> {{ draft.DefinitionSubmissionDate }}</p>
+
+
+<form action="{% url 'approveDraft' draft.Acronym %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Approve Draft</button>
+</form>
+
+<a href="{% url 'deleteDraft' draft.Acronym %}">Delete Draft</a>
+
+
+</body>
+</html>

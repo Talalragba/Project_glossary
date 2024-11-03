@@ -62,7 +62,7 @@ def search_view(request):
         message = None
         definition = None
         acronym = request.GET.get('acronym')
-        docDef = eng_definition_draft_collection.find_one({"Acronym": acronym})
+        docDef = eng_definition_collection.find_one({"Acronym": acronym})
         
         print("#################################################")
         print("je suis la")
@@ -127,7 +127,7 @@ def login_view(request):
 
 #######################################
 
-eng_definition_draft_collection = dbft['engDefinitionDraftCollection'] # Use your actual collection name
+eng_definition_draft_collection = dbft['engDefinitionDraftCollection'] 
 
 def define_view(request):
     
@@ -240,3 +240,91 @@ def user_delete_view(request, username):
     elif request.method == 'POST':
         user_collection.delete_one({"UserName": username})
         return redirect('search')
+
+##################################
+
+def drafts_view(request):
+    if request.session.get('logedUser') != True:
+        return redirect('login')
+    else : 
+        drafts = list(eng_definition_draft_collection.find()) 
+        print(drafts)
+        return render(request, 'appwmlg/drafts.html', {'drafts': drafts})
+
+def draft_view(request, acronym):
+    if request.session.get('logedUser') != True:
+        return redirect('login')
+    else :
+        draft = eng_definition_draft_collection.find_one({"Acronym": acronym})
+        return render(request, 'appwmlg/draft.html', {'draft': draft})
+
+
+eng_definition_collection = dbft['engDefinitionCollection'] 
+
+'''
+The logic in the approve_draft_view is taken into account
+the fact that when a loged moderator or admin if he alrady 
+approved a draft it should not show in the drafts page which
+means that a test condition should be considered in the drafts page
+to prevent that 
+'''
+def approve_draft_view(request, acronym): 
+    print("#############################")
+    print("khalid")
+    print("#############################")
+
+    if request.session.get('logedUser') != True:
+        return redirect('login')
+    
+    draft = eng_definition_draft_collection.find_one({"Acronym": acronym})
+
+    if request.session.get("username") in draft['Approvers']: # in any case the by accedent the moderator know how to write the url of a draft directly into the browser so he can't approve two or more times the same draft.
+        return redirect('search')
+    
+    if draft['ApproversNumber'] != 2 :
+        approvers_number = draft['ApproversNumber'] + 1
+        approver = draft['Approvers'] + [request.session.get("username")]
+        eng_definition_draft_collection.update_one({"Acronym": acronym}, {"$set": {"Approvers": approver, "ApproversNumber": approvers_number}})
+        return redirect('search')
+    else :
+        approvers_number = draft['ApproversNumber'] + 1
+        approver = draft['Approvers'] + [request.session.get("username")]              
+        definition_date = timezone.now()
+        
+        count = eng_definition_collection.count_documents({"Acronym": draft['Acronym']})
+        dfs = eng_definition_collection.find({"Acronym": draft['Acronym']}) # The existing definition that with the same acronym
+
+        for df in dfs : 
+            eng_definition_collection.update_one({"Acronym": df['Acronym']}, {"$set": {"ActualDefinition": False}})
+        
+        eng_definition_collection.insert_one({
+            "Acronym": draft['Acronym'],
+            "Definition": draft['Definition'],
+            "Source": draft['Source'],
+            "Industry": draft['Industry'],
+            "DefinitionDate": definition_date,
+            "DefinitionAuthor": draft['DefinitionAuthor'],
+            "Approvers": [approver],
+            "ApproversNumber": approvers_number,
+            "ActualDefinition": True,
+            "DefinitionVersion": count+1
+        })   
+        eng_definition_draft_collection.delete_one({"Acronym": acronym})
+        return redirect('search')
+
+def delete_draft_view(request, acronym):
+    
+    draft = eng_definition_draft_collection.find_one({"Acronym": acronym})
+    if request.method == "POST":
+        author = draft['DefinitionAuthor']
+        reason = request.POST.get("reason")  
+
+        eng_definition_draft_collection.delete_one({"Acronym": acronym})
+        user_collection.update_one({"UserName": author}, {"$set": {"Notifications": reason}})
+
+        return redirect('search')
+
+    return render(request, 'appwmlg/deleteDraft.html', {'draft': draft})
+
+
+

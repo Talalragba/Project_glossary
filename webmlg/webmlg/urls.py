@@ -11,6 +11,13 @@ from appwmlg.views import users_view
 from appwmlg.views import user_view
 from appwmlg.views import user_update_view
 from appwmlg.views import user_delete_view
+##########
+from appwmlg.views import drafts_view
+from appwmlg.views import draft_view
+from appwmlg.views import approve_draft_view
+from appwmlg.views import delete_draft_view
+
+
 
 urlpatterns = [
     #path('',index, name='index'),
@@ -26,6 +33,12 @@ urlpatterns = [
     path('users/<str:username>/',user_view, name='user'),
     path('users/<str:username>/userUpdate',user_update_view, name='userUpdate'),
     path('users/<str:username>/userDelete',user_delete_view, name='userDelete'),
+    ####################################
+    path('drafts/', drafts_view, name='drafts'),
+    path('drafts/<str:acronym>/', draft_view, name='draft'),
+    path('drafts/<str:acronym>/approveDraft', approve_draft_view, name='approveDraft'),
+    path('drafts/<str:acronym>/deleteDraft', delete_draft_view, name='deleteDraft'),
+
 ]
 
 

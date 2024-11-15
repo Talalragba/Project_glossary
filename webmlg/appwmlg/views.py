@@ -1,93 +1,36 @@
-
-# from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from pymongo import MongoClient
-import pymongo
-
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+#################### For mongodb-django connection ####################
+import pymongo
+from pymongo import MongoClient
 
+#################### For sending emails to new users ####################
 import secrets
 from django.core.mail import send_mail
 
+#################### For timezone ####################
 from django.utils import timezone
 
-
-# Create your views here.
-"""
-def index(request):
-    return render(request, 'appwmlg/index.html')
-"""
-
-#@login_required(login_url="login")
-
-'''
-from django.shortcuts import render
-from django.conf import settings
-from datetime import datetime
-from pymongo import MongoClient
-
-# Set up MongoDB client
-client = MongoClient(settings.MONGODB_URI)
-db = client[settings.MONGO_DB_NAME]  # Use your actual database name here
-
-def search_acronym(request):
-    definition = None
-    error_message = None
-    
-    if 'acronym' in request.GET:
-        acronym = request.GET.get('acronym').strip()
-        
-        # Access the collection and search for the document
-        collection = db['engDefinitionDraftCollection']
-        document = collection.find_one({"acronym": acronym})
-        
-        if document:
-            definition = document.get("definition")  # Get the definition if the document exists
-        else:
-            error_message = "The acronym doesn't exist."
-            #messages.error(request, "Invalid credentials")
-    
-    return render(request, 'searchpage.html', {'definition': definition, 'error_message': error_message})
-
-'''
-def search_view(request):
-    if request.session.get("logedUser") != True :
-        return redirect("login")  # Redirect to login if user is not authenticated
-    elif 'acronym' in request.GET:
-        #request.method == "GET":
-        docDef = None
-        message = None
-        definition = None
-        acronym = request.GET.get('acronym')
-        docDef = eng_definition_collection.find_one({"Acronym": acronym})
-        
-        print("#################################################")
-        print("je suis la")
-        print(message)
-
-        if docDef:
-            definition = docDef["Definition"]  
-        else:
-            message = "The acronym doesn't exist."
-        return render(request, 'appwmlg/searchpage.html', {'definition': definition, 'message': message})
-
-    else :
-        return render(request, 'appwmlg/searchpage.html')
-
-
-def logout_view(request):
-    request.session.flush()  # Clear the session
-    return redirect('login')  # Redirect to login page
-
-
-# Connect to MongoDB
+#################### Connect to MongoDB ####################
 client = MongoClient('mongodb://localhost:27017/')
 dbft = client['dbft']
 user_collection = dbft['userCollection']
+eng_definition_draft_collection = dbft['engDefinitionDraftCollection']
+eng_definition_collection = dbft['engDefinitionCollection'] 
 
+#################### This is the login view ####################
+#In this view we get the username and password from the login page
+#then we look if the user attempting to login is exist in the userCollection 
+#so if yes we create a session where we store logedUser (boolen value), 
+#username and userRole (we might add other parameters as the project evolve)
+#after that we redirect the user to the search page, but if not exist in 
+#the userCollection we send a message using django.contrib's messages library
+#and we redirect to login page again else if now one is attempting to login
+#we just render the login page
+#################################################################
 def login_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -124,11 +67,55 @@ def login_view(request):
 
     return render(request, 'appwmlg/index.html')
 
+#################### This is the lougout view ####################
+# First we clear the session then we redirect to the login page
+def logout_view(request):
+    request.session.flush()  # Clear the session
+    return redirect('login')  # Redirect to login page
 
-#######################################
+#################### This is the search view ####################
+#to pevent non authenticated users to get into this view we first check the
+#the session's logedUser variable if it is a False value we then redirect
+#to the login page but in case it is a True value we wait (render the search page)
+#until the user type in an acronym if it is exit in the engDefinitionCollection
+#we then show the user the definition of the acronym but if not we show him
+#that "The acronym doesn't exist"
+##################################################################
+def search_view(request):
+    if request.session.get("logedUser") != True :
+        return redirect("login")  # Redirect to login if user is not authenticated
+    elif 'acronym' in request.GET:
+        #request.method == "GET":
+        docDef = None
+        message = None
+        definition = None
+        acronym = request.GET.get('acronym')
+        docDef = eng_definition_collection.find_one({"Acronym": acronym})
+        
+        print("#################################################")
+        print("je suis la")
+        print(message)
 
-eng_definition_draft_collection = dbft['engDefinitionDraftCollection'] 
+        if docDef:
+            definition = docDef["Definition"]  
+        else:
+            message = "The acronym doesn't exist."
+        return render(request, 'appwmlg/searchpage.html', {'definition': definition, 'message': message})
 
+    else :
+        return render(request, 'appwmlg/searchpage.html')
+
+#################### This is the define view ####################
+#1) to pevent non authenticated users to get into this view we first check the
+#the session's logedUser variable if it is a False value we redirect
+#to the login page.
+#2) as long as the author is just typing in or just being in the define page
+#we keep rendring the define page but when he start submitting a new definiton we get the
+#informations from the define page to the define view and we procced by inserting 
+#the draft into engDefinitionDraftCollection for reviewing and approving or refusing it 
+#then the author is redirected the search page (a notification might be added 
+#to notify thr author that his definition is sent for check)
+#################################################################
 def define_view(request):
     
     if request.session.get("logedUser") != True:
@@ -159,11 +146,16 @@ def define_view(request):
         #print(request.session.get("username"))
         return render(request, 'appwmlg/define.html')
 
-
-
-############################
-
-
+#################### This is the addUser view ####################
+#1) to pevent non authenticated users to get into this view we first check the
+#the session's logedUser variable if it is a False value we redirect
+#to the login page.
+#2) as long as the admin is just typing in or just being in the addUser page
+#we keep rendring the addUser page but when he start submitting a new user we get the
+#informations from the addUser page to the addUser view and we procced by inserting
+#the new user into userCollection and sending a congratulation email containing
+#the user's username and password to his email adress then we redirect to search page
+# ################################################################ 
 def addUser_view(request):
 
     if request.session.get("logedUser") != True:
@@ -203,10 +195,14 @@ def addUser_view(request):
     else :
         return render(request, 'appwmlg/addUser.html')
 
-
-
-##########################################
-
+#################### This is the users view ####################
+#1) to pevent non authenticated users to get into this view we first check the
+#the session's logedUser variable if it is a False value we redirect
+#to the login page.
+#2) but if it is a True value we then read all the existing users and put 
+#them in the users variable which then is passed to the users page as an object
+#that conatin all users data
+################################################################
 def users_view(request):
     if request.session.get('logedUser') != True:
         return redirect('login')
@@ -215,7 +211,16 @@ def users_view(request):
         print(users)
         return render(request, 'appwmlg/users.html', {'users': users})       
 
-
+#################### This is the user view ####################
+#0) first thing here is that this view gets a variable passed to it from the
+#users page which is in this case 'username' 
+#1) and to pevent non authenticated users to get into this view directly from the url
+#we first check the the session's logedUser variable if it is a False value we redirect
+#to the login page.
+#2) after that we take the variable that was passed to this view which is the username
+#and we look for the document corresponding to this username and  we store the data extracted
+#into a variable called user which is then passed to the user page as a parameter
+############################################################### 
 def user_view(request, username):
     if request.session.get('logedUser') != True:
         return redirect('login')
@@ -223,7 +228,14 @@ def user_view(request, username):
         user = user_collection.find_one({"UserName": username})
         return render(request, 'appwmlg/user.html', {'user': user})
     
-    
+#################### This is the user update view ####################
+#0) first thing here is that this view gets a variable passed to it from the
+#user page which is in this case 'username' 
+#1) we also get the now role and new email if updated from the user page using
+#the POST method after that we store/update this data into the user document 
+#corresponding to the username that we got passed as a parameter to the view 
+#and finally we redirect to the search page
+#######################################################################
 def user_update_view(request, username):
     if request.method == 'POST':
         newRole = request.POST.get('role')
@@ -233,7 +245,15 @@ def user_update_view(request, username):
         user_collection.update_one({"UserName": username}, {"$set": {"UserRole": newRole, "UserEmail": newEmail}})
         return redirect('search') 
 
-
+#################### This is the user delete view ####################
+#0) first thing here is that this view gets a variable passed to it from the
+#user page which is in this case 'username' 
+#1) and to pevent non authenticated users to get into this view directly from the url
+#we first check the the session's logedUser variable if it is a False value we redirect
+#to the login page.
+#2) else we delete the user corresponding to the username from the userCollection and
+#we then redirect to search page
+###############################################################
 def user_delete_view(request, username):
     if request.session.get('logedUser') != True:
         return redirect('login')
@@ -241,8 +261,14 @@ def user_delete_view(request, username):
         user_collection.delete_one({"UserName": username})
         return redirect('search')
 
-##################################
-
+#################### This is the drafts view ####################
+#1) and to pevent non authenticated users to get into this view directly from the url
+#we first check the session's logedUser variable if it is a False value we redirect
+#to the login page.
+#2) else we get all the drafts from engDefinitionDraftCollection and we put the into
+#drafts varible which the is passed as parameter to the draft page which 
+#will desplay them 
+#################################################################
 def drafts_view(request):
     if request.session.get('logedUser') != True:
         return redirect('login')
@@ -251,6 +277,16 @@ def drafts_view(request):
         print(drafts)
         return render(request, 'appwmlg/drafts.html', {'drafts': drafts})
 
+#################### This is the user update view ####################
+#0) first thing here is that this view gets a variable passed to it from the
+#drafts page which is in this case 'acronym' 
+#1) and to pevent non authenticated users to get into this view directly from the url
+#we first check the session's logedUser variable if it is a False value we redirect
+#to the login page.
+#2) after that we take the variable that was passed to this view which is the acronym
+#and we look for the document corresponding to this acronym and  we store the data extracted
+#into a variable called draft which is then passed to the draft page as a parameter
+######################################################################
 def draft_view(request, acronym):
     if request.session.get('logedUser') != True:
         return redirect('login')
@@ -258,10 +294,17 @@ def draft_view(request, acronym):
         draft = eng_definition_draft_collection.find_one({"Acronym": acronym})
         return render(request, 'appwmlg/draft.html', {'draft': draft})
 
-
-eng_definition_collection = dbft['engDefinitionCollection'] 
-
-'''
+'''######################################################################
+0) first thing here is that this view gets a variable passed to it from the
+draft page which is in this case 'acronym' 
+1) and to pevent non authenticated users to get into this view directly from the url
+we first check the session's logedUser variable if it is a False value we redirect
+to the login page.
+2) after that we get the draft correspondig to the acronym from the engDefinitionDraftCollection
+then we procced with the approval procces and we get to the third approver, and he procced so
+we then transfer the draft from engDefinitionDraftCollection to engDefinitionCollection
+and we delete the draft eventually 
+Note :
 The logic in the approve_draft_view is taken into account
 the fact that when a loged moderator or admin if he alrady 
 approved a draft it should not show in the drafts page which
@@ -312,7 +355,20 @@ def approve_draft_view(request, acronym):
         eng_definition_draft_collection.delete_one({"Acronym": acronym})
         return redirect('search')
 
+#################### This is the delete draft view ####################
+#0) first thing here is that this view gets a variable passed to it from the
+#draft page which is in this case 'acronym' 
+#1) and to pevent non authenticated users to get into this view directly from the url
+#we first check the the session's logedUser variable if it is a False value we redirect
+#to the login page.
+#2) after that we only render the deleteDraft page until the approver chose the reason why 
+#he is deleting this draft then we get the author of the drat and we delete the draft
+#and send a notification to the author and redirect to search page
+########################################################################
 def delete_draft_view(request, acronym):
+
+    if request.session.get('logedUser') != True:
+        return redirect('login')
     
     draft = eng_definition_draft_collection.find_one({"Acronym": acronym})
     if request.method == "POST":
@@ -320,11 +376,42 @@ def delete_draft_view(request, acronym):
         reason = request.POST.get("reason")  
 
         eng_definition_draft_collection.delete_one({"Acronym": acronym})
-        user_collection.update_one({"UserName": author}, {"$set": {"Notifications": reason}})
+        user_collection.update_one({"UserName": author}, {"$push": {"Notifications":[{
+            "message": reason,
+            "timestamp": timezone.now(),
+            "read": False}]}})
 
         return redirect('search')
 
     return render(request, 'appwmlg/deleteDraft.html', {'draft': draft})
 
+#################### This is the notifications view ####################
+#1) to pevent non authenticated users to get into this view directly from the url
+#we first check the the session's logedUser variable if it is a False value we redirect
+#to the login page.
+#2) after that we get the user document of the logged user and pass it to 
+#the notifications page to be shown to the user
+########################################################################
+def notifications_view(request):
+    if request.session.get('logedUser') != True:
+        return redirect('login')
+    else : 
+        user = user_collection.find_one({"UserName": request.session["username"]})
+        print(user)
+        print(user["_id"])
+        return render(request, 'appwmlg/notifications.html', {'user': user})   
 
-
+#################### This is the notification view ####################
+#1) to pevent non authenticated users to get into this view directly from the url
+#we first check the the session's logedUser variable if it is a False value we redirect
+#to the login page.
+#2) in this view instead of passing a paramter to the view we used another technique
+#which is '?message={{ notification.message }}' in the notifications page then we passed
+#once again the same message to notification page in order to be displayed correctly
+########################################################################
+def notification_view(request):
+    if request.session.get('logedUser') != True:
+        return redirect('login')
+    else :
+        message = request.GET.get("message")
+        return render(request, 'appwmlg/notification.html', {'message': message})

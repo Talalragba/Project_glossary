@@ -16,7 +16,8 @@ from appwmlg.views import drafts_view
 from appwmlg.views import draft_view
 from appwmlg.views import approve_draft_view
 from appwmlg.views import delete_draft_view
-
+from appwmlg.views import notifications_view
+from appwmlg.views import notification_view
 
 
 urlpatterns = [
@@ -38,6 +39,9 @@ urlpatterns = [
     path('drafts/<str:acronym>/', draft_view, name='draft'),
     path('drafts/<str:acronym>/approveDraft', approve_draft_view, name='approveDraft'),
     path('drafts/<str:acronym>/deleteDraft', delete_draft_view, name='deleteDraft'),
+    ######################################
+    path('notifications/', notifications_view, name='notifications'),
+    path('notification/', notification_view, name='notification'),
 
 ]
 

@@ -13,6 +13,25 @@
 
 <button onclick="location.href='{% url 'logout' %}'">Logout</button>
 
+<h1>Notifications List</h1>
+
+<ul>
+    {% for notification_list in user.Notifications %}
+        {% for notification in notification_list %}
+            {% if not notification.read %}
+            <li>
+                <a href="{% url 'notification' %}?message={{ notification.message }}">
+                {{ notification.message }}
+                </a>
+                <p>
+                {{ notification.timestamp}}
+                </p>
+            </li>    
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+</ul>
+ 
 
 </body>
 </html>

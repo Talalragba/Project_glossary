@@ -20,6 +20,9 @@ dbft = client['dbft']
 user_collection = dbft['userCollection']
 eng_definition_draft_collection = dbft['engDefinitionDraftCollection']
 eng_definition_collection = dbft['engDefinitionCollection'] 
+user_credentials = dbft['userCredentials']
+#db.engDefinitionDraftCollection.deleteMany({}) to clear a collection in the db using MongoDB shell
+
 
 #################### This is the login view ####################
 #In this view we get the username and password from the login page
@@ -38,26 +41,26 @@ def login_view(request):
 
         print(f"Attempting login with username: {username}")  # Debugging line
 
-        user = user_collection.find_one({"UserName": username, "Password": password})
-        print("###################################")
-        print(user)
-        print("###################################")
-        if user : 
-            if user['UserRole'] == "Admin":
-                print("Role:", user['UserRole'])
-            print("###################################")
-            print("Languages:", user['UserLanguages'][0])
-            print("###################################")
-        print("###################################")
+        user = user_credentials.find_one({"UserName": username, "Password": password})
+
         if user:
-            print("Login successful!")  # Debugging line
-            print("Username:", username)
-            print(request.session.get("logedUser"))
             request.session["logedUser"] = True
+            request.session["logedUserId"] = user['UserID']
             request.session["username"] = user['UserName']
-            request.session["userRole"] = user['UserRole']
+            user_data = user_collection.find_one({"UserID": user['UserID']})
+            request.session["userRole"] = user_data['UserRole']
+            ###############################################################
+            #here i should add the request.session["chosenLanguage"]      #
+            #which must be passed to this view by the index page          #
+            #this will help during the navigation within the app          #
+            #as the user that is logged in is caracterised by his role    #
+            #the language that he choses for the App and eventually       #
+            #his id which is the objectId associated to his user document #
+            ###############################################################
             print(request.session.get("logedUser"))
             print(request.session.get("username"))
+            print(request.session.get("userRole"))
+            print(request.session.get("logedUserId"))
             return redirect('search')  # Ensure this matches your URL pattern name for the search page
         else:
             messages.error(request, "Invalid credentials")
@@ -83,18 +86,14 @@ def logout_view(request):
 ##################################################################
 def search_view(request):
     if request.session.get("logedUser") != True :
-        return redirect("login")  # Redirect to login if user is not authenticated
+        return redirect("login")
     elif 'acronym' in request.GET:
-        #request.method == "GET":
+
         docDef = None
         message = None
         definition = None
         acronym = request.GET.get('acronym')
         docDef = eng_definition_collection.find_one({"Acronym": acronym})
-        
-        print("#################################################")
-        print("je suis la")
-        print(message)
 
         if docDef:
             definition = docDef["Definition"]  
@@ -127,18 +126,23 @@ def define_view(request):
         industry = request.POST.getlist('industry')  
         definition_submission_date = timezone.now()  
         definition_author = request.session.get("username")
+        definition_author_id = request.session.get("logedUserId")
         
         # Add to MongoDB
-        eng_definition_draft_collection.insert_one({
+        insertedDraft = eng_definition_draft_collection.insert_one({
             "Acronym": acronym,
             "Definition": definition,
             "Source": source,
             "Industry": industry,
             "DefinitionSubmissionDate": definition_submission_date,
             "DefinitionAuthor": definition_author,
+            "DefinitionAuthorID": definition_author_id,
             "Approvers": [],
             "ApproversNumber": 0 
         })
+        insertedDraft_id = insertedDraft.inserted_id
+        eng_definition_draft_collection.update_one({"_id": insertedDraft_id}, {"$set": {"DraftID": str(insertedDraft_id)}}) 
+
         
         return redirect('search')  # Redirect to search page or another page after submission
 
@@ -167,25 +171,31 @@ def addUser_view(request):
         user_languages = request.POST.getlist('languages')  # Get multiple selections as a list
         user_email = request.POST.get('user_email')
         born_date = request.POST.get('born_date')
-        notification = [{
+        notification = [[{
                         "message": "Your account is activated now",
                         "timestamp": timezone.now(),
-                        "read": False
-                        }]
-
+                        "read": False}]]
         # Generate a random password
         password = secrets.token_urlsafe(8)  # Generates an 8-character password
 
-        # Insert into MongoDB
-        user_collection.insert_one({
+        # Insert user data into user_collection 
+        insertedUser = user_collection.insert_one({
             "UserName": username,
             "HireDate": hire_date,
             "UserRole": user_role,
             "UserLanguages": user_languages,
             "UserEmail": user_email,
             "BornDate": born_date,
-            "Password": password,
             "Notifications": notification
+        })
+
+        insertedUser_id = insertedUser.inserted_id
+        user_collection.update_one({"_id": insertedUser_id}, {"$set": {"UserID": str(insertedUser_id) }}) 
+        # Insert user credentials into user_credentials 
+        user_credentials.insert_one({
+            "UserID": str(insertedUser_id),
+            "UserName": username,
+            "Password": password
         })
 
         # Send the congratulatory email with the password
@@ -227,11 +237,11 @@ def users_view(request):
 #and we look for the document corresponding to this username and  we store the data extracted
 #into a variable called user which is then passed to the user page as a parameter
 ############################################################### 
-def user_view(request, username):
+def user_view(request, UserID):
     if request.session.get('logedUser') != True:
         return redirect('login')
     else :
-        user = user_collection.find_one({"UserName": username})
+        user = user_collection.find_one({"UserID": UserID})
         return render(request, 'appwmlg/user.html', {'user': user})
     
 #################### This is the user update view ####################
@@ -242,13 +252,13 @@ def user_view(request, username):
 #corresponding to the username that we got passed as a parameter to the view 
 #and finally we redirect to the search page
 #######################################################################
-def user_update_view(request, username):
+def user_update_view(request, UserID):
     if request.method == 'POST':
         newRole = request.POST.get('role')
         newEmail = request.POST.get('email')
 
         # Update the user in the database
-        user_collection.update_one({"UserName": username}, {"$set": {"UserRole": newRole, "UserEmail": newEmail}})
+        user_collection.update_one({"UserID": UserID}, {"$set": {"UserRole": newRole, "UserEmail": newEmail}})
         return redirect('search') 
 
 #################### This is the user delete view ####################
@@ -260,11 +270,11 @@ def user_update_view(request, username):
 #2) else we delete the user corresponding to the username from the userCollection and
 #we then redirect to search page
 ###############################################################
-def user_delete_view(request, username):
+def user_delete_view(request, UserID):
     if request.session.get('logedUser') != True:
         return redirect('login')
     elif request.method == 'POST':
-        user_collection.delete_one({"UserName": username})
+        user_collection.delete_one({"UserID": UserID})
         return redirect('search')
 
 #################### This is the drafts view ####################
@@ -293,11 +303,11 @@ def drafts_view(request):
 #and we look for the document corresponding to this acronym and  we store the data extracted
 #into a variable called draft which is then passed to the draft page as a parameter
 ######################################################################
-def draft_view(request, acronym):
+def draft_view(request, DraftID):
     if request.session.get('logedUser') != True:
         return redirect('login')
     else :
-        draft = eng_definition_draft_collection.find_one({"Acronym": acronym})
+        draft = eng_definition_draft_collection.find_one({"DraftID": DraftID})
         return render(request, 'appwmlg/draft.html', {'draft': draft})
 
 '''######################################################################
@@ -317,48 +327,49 @@ approved a draft it should not show in the drafts page which
 means that a test condition should be considered in the drafts page
 to prevent that 
 '''
-def approve_draft_view(request, acronym): 
-    print("#############################")
-    print("khalid")
-    print("#############################")
+def approve_draft_view(request, DraftID): 
 
     if request.session.get('logedUser') != True:
         return redirect('login')
     
-    draft = eng_definition_draft_collection.find_one({"Acronym": acronym})
+    draft = eng_definition_draft_collection.find_one({"DraftID": DraftID})
 
-    if request.session.get("username") in draft['Approvers']: # in any case the by accedent the moderator know how to write the url of a draft directly into the browser so he can't approve two or more times the same draft.
+    if request.session.get("logedUserId") in draft['Approvers']: # in any case the by accedent the moderator know how to write the url of a draft directly into the browser so he can't approve two or more times the same draft.
         return redirect('search')
     
     if draft['ApproversNumber'] != 2 :
         approvers_number = draft['ApproversNumber'] + 1
-        approver = draft['Approvers'] + [request.session.get("username")]
-        eng_definition_draft_collection.update_one({"Acronym": acronym}, {"$set": {"Approvers": approver, "ApproversNumber": approvers_number}})
+        approver = draft['Approvers'] + [request.session.get("logedUserId")]
+        eng_definition_draft_collection.update_one({"DraftID": DraftID}, {"$set": {"Approvers": approver, "ApproversNumber": approvers_number}})
         return redirect('search')
     else :
         approvers_number = draft['ApproversNumber'] + 1
-        approver = draft['Approvers'] + [request.session.get("username")]              
+        approver = draft['Approvers'] + [request.session.get("logedUserId")]              
         definition_date = timezone.now()
         
         count = eng_definition_collection.count_documents({"Acronym": draft['Acronym']})
         dfs = eng_definition_collection.find({"Acronym": draft['Acronym']}) # The existing definition that with the same acronym
 
         for df in dfs : 
-            eng_definition_collection.update_one({"Acronym": df['Acronym']}, {"$set": {"ActualDefinition": False}})
+            eng_definition_collection.update_one({"DfID": df['DfID']}, {"$set": {"ActualDefinition": False}})
         
-        eng_definition_collection.insert_one({
+        insertedDf = eng_definition_collection.insert_one({
             "Acronym": draft['Acronym'],
             "Definition": draft['Definition'],
             "Source": draft['Source'],
             "Industry": draft['Industry'],
             "DefinitionDate": definition_date,
             "DefinitionAuthor": draft['DefinitionAuthor'],
+            "DefinitionAuthorID": draft['DefinitionAuthorID'],          
             "Approvers": [approver],
             "ApproversNumber": approvers_number,
             "ActualDefinition": True,
             "DefinitionVersion": count+1
-        })   
-        eng_definition_draft_collection.delete_one({"Acronym": acronym})
+        })
+        insertedDf_id = insertedDf.inserted_id
+        eng_definition_collection.update_one({"_id": insertedDf_id}, {"$set": {"DfID": str(insertedDf_id)}}) 
+   
+        eng_definition_draft_collection.delete_one({"DraftID": DraftID})
         return redirect('search')
 
 #################### This is the delete draft view ####################
@@ -371,18 +382,18 @@ def approve_draft_view(request, acronym):
 #he is deleting this draft then we get the author of the drat and we delete the draft
 #and send a notification to the author and redirect to search page
 ########################################################################
-def delete_draft_view(request, acronym):
+def delete_draft_view(request, DraftID):
 
     if request.session.get('logedUser') != True:
         return redirect('login')
     
-    draft = eng_definition_draft_collection.find_one({"Acronym": acronym})
+    draft = eng_definition_draft_collection.find_one({"DraftID": DraftID})
     if request.method == "POST":
-        author = draft['DefinitionAuthor']
+        authorID = draft['DefinitionAuthorID']
         reason = request.POST.get("reason")  
 
-        eng_definition_draft_collection.delete_one({"Acronym": acronym})
-        user_collection.update_one({"UserName": author}, {"$push": {"Notifications":[{
+        eng_definition_draft_collection.delete_one({"DraftID": DraftID})
+        user_collection.update_one({"UserID": authorID}, {"$push": {"Notifications":[{
             "message": reason,
             "timestamp": timezone.now(),
             "read": False}]}})
@@ -402,9 +413,7 @@ def notifications_view(request):
     if request.session.get('logedUser') != True:
         return redirect('login')
     else : 
-        user = user_collection.find_one({"UserName": request.session["username"]})
-        print(user)
-        print(user["_id"])
+        user = user_collection.find_one({"UserID": request.session["logedUserId"]})
         return render(request, 'appwmlg/notifications.html', {'user': user})   
 
 #################### This is the notification view ####################
@@ -421,3 +430,4 @@ def notification_view(request):
     else :
         message = request.GET.get("message")
         return render(request, 'appwmlg/notification.html', {'message': message})
+    

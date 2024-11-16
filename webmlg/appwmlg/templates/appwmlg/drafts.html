@@ -15,7 +15,7 @@
 <h1>Draft List</h1>
 <ul>
     {% for draft in drafts %}
-    <li><a href="{% url 'draft' draft.Acronym %}">{{ draft.Acronym }}</a></li>
+    <li><a href="{% url 'draft' draft.DraftID %}">{{ draft.Acronym }}</a></li>
     {% endfor %}
 </ul>
 

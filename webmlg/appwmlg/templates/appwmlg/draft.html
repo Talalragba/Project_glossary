@@ -18,12 +18,12 @@
 <p><strong>Definition Submission Date:</strong> {{ draft.DefinitionSubmissionDate }}</p>
 
 
-<form action="{% url 'approveDraft' draft.Acronym %}" method="post">
+<form action="{% url 'approveDraft' draft.DraftID %}" method="post">
     {% csrf_token %}
     <button type="submit">Approve Draft</button>
 </form>
 
-<a href="{% url 'deleteDraft' draft.Acronym %}">Delete Draft</a>
+<a href="{% url 'deleteDraft' draft.DraftID %}">Delete Draft</a>
 
 
 </body>

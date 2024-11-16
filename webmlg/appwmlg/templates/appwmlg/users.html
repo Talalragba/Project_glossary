@@ -16,7 +16,7 @@
 <h1>Users List</h1>
 <ul>
     {% for user in users %}
-    <li><a href="{% url 'user' user.UserName %}">{{ user.UserName }}</a></li>
+    <li><a href="{% url 'user' user.UserID %}">{{ user.UserName }}</a></li>
     {% endfor %}
 </ul>
 

@@ -20,7 +20,7 @@
 
         <!-- User name field -->
         <label for="username">Username :</label>
-        <input type="text" id="username" name="username" pattern="[A-Za-z]{1,30}" title="Only Latin characters, max 30" required>
+        <input type="text" id="username" name="username" pattern="[A-Za-z0-9\s]{1,30}" title="Only Latin characters, max 30" required>
         <br>
 
         <!-- Hire date field -->
@@ -33,7 +33,8 @@
         <select id="user_role" name="user_role" required>
             <option value="admin">Admin</option>
             <option value="moderator">Moderator</option>
-            <option value="user">User</option>
+            <option value="author">Author</option>
+            <option value="vistor">Vistor</option>
         </select>
         <br>
 

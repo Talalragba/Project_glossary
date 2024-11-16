@@ -13,23 +13,25 @@
 <button onclick="location.href='{% url 'logout' %}'">Logout</button>
 
 <h1>User Details for {{ user.UserName }}</h1>
-<form method="POST" action="{% url 'userUpdate' user.UserName %}">
+<form method="POST" action="{% url 'userUpdate' user.UserID %}">
     {% csrf_token %}
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" value="{{ user.UserEmail }}" required><br>
     <label for="role">Role:</label>
     <select id="role" name="role" required>
-        <option value="user" {% if user.UserRole == 'user' %}selected{% endif %}>User</option>
-        <option value="moderator" {% if user.UserRole == 'moderator' %}selected{% endif %}>Moderator</option>
         <option value="admin" {% if user.UserRole == 'admin' %}selected{% endif %}>Admin</option>
+        <option value="moderator" {% if user.UserRole == 'moderator' %}selected{% endif %}>Moderator</option>
+        <option value="author" {% if user.UserRole == 'author' %}selected{% endif %}>Author</option>        
+        <option value="visitor" {% if user.UserRole == 'visitor' %}selected{% endif %}>Vistor</option>
     </select><br>
     <button type="submit">Update</button>
 </form>
 <p><strong>Languages:</strong> {{ user.UserLanguages|join:", " }}</p>
 <p><strong>Hire Date:</strong> {{ user.HireDate }}</p>
 <p><strong>Born Date:</strong> {{ user.BornDate }}</p>
+<p><strong>User Role:</strong> {{ user.UserRole }}</p>
 
-<form method="POST" action="{% url 'userDelete' user.UserName %}" style="display:inline;">
+<form method="POST" action="{% url 'userDelete' user.UserID %}" style="display:inline;">
     {% csrf_token %}
     <button type="submit">Delete User</button>
 </form>

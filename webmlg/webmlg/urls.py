@@ -29,18 +29,16 @@ urlpatterns = [
     #####################################
     path('users/', users_view, name='users'),
     path('addUser/', addUser_view, name='addUser'),
-    path('users/<str:username>/',user_view, name='user'),
-    path('users/<str:username>/userUpdate',user_update_view, name='userUpdate'),
-    path('users/<str:username>/userDelete',user_delete_view, name='userDelete'),
+    path('users/<str:UserID>/',user_view, name='user'),
+    path('users/<str:UserID>/userUpdate',user_update_view, name='userUpdate'),
+    path('users/<str:UserID>/userDelete',user_delete_view, name='userDelete'),
     ######################################
     path('drafts/', drafts_view, name='drafts'),
-    path('drafts/<str:acronym>/', draft_view, name='draft'),
-    path('drafts/<str:acronym>/approveDraft', approve_draft_view, name='approveDraft'),
-    path('drafts/<str:acronym>/deleteDraft', delete_draft_view, name='deleteDraft'),
+    path('drafts/<str:DraftID>/', draft_view, name='draft'),
+    path('drafts/<str:DraftID>/approveDraft', approve_draft_view, name='approveDraft'),
+    path('drafts/<str:DraftID>/deleteDraft', delete_draft_view, name='deleteDraft'),
     ######################################
     path('notifications/', notifications_view, name='notifications'),
     path('notification/', notification_view, name='notification'),
 
 ]
-
-

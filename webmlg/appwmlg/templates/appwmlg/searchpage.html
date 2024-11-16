@@ -1,4 +1,3 @@
-<!-- searchpage.html -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barre de Recherche - Thème Bleu</title>
     <style>
-        /* Your existing styles */
+        /* custom styles will be added here */
         .result-message {
             margin-top: 20px;
             font-size: 1.2em;
@@ -16,15 +15,12 @@
 </head>
 <body>
 
-<!--button onclick="window.location.href='{% url 'logout' %}'">Logout</button-->
 <button onclick="location.href='{% url 'logout' %}'">Logout</button>
 <button onclick="location.href='{% url 'define' %}'">Add definition</button>
 <button onclick="location.href='{% url 'users' %}'">Users</button>
 <button onclick="location.href='{% url 'drafts' %}'">Pending definitions</button>
 <button onclick="location.href='{% url 'notifications' %}'">Notifications</button>
 
-
-<!--<button class="add-button" onclick="window.location.href='/add-page'">Add</button>-->
 
 <div class="search-container">
     <form method="GET" action="{% url 'search' %}">

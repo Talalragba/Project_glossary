@@ -167,6 +167,11 @@ def addUser_view(request):
         user_languages = request.POST.getlist('languages')  # Get multiple selections as a list
         user_email = request.POST.get('user_email')
         born_date = request.POST.get('born_date')
+        notification = [{
+                        "message": "Your account is activated now",
+                        "timestamp": timezone.now(),
+                        "read": False
+                        }]
 
         # Generate a random password
         password = secrets.token_urlsafe(8)  # Generates an 8-character password
@@ -179,7 +184,8 @@ def addUser_view(request):
             "UserLanguages": user_languages,
             "UserEmail": user_email,
             "BornDate": born_date,
-            "Password": password
+            "Password": password,
+            "Notifications": notification
         })
 
         # Send the congratulatory email with the password

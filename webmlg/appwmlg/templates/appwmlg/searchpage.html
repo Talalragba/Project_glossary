@@ -15,11 +15,25 @@
 </head>
 <body>
 
-<button onclick="location.href='{% url 'logout' %}'">Logout</button>
-<button onclick="location.href='{% url 'define' %}'">Add definition</button>
-<button onclick="location.href='{% url 'users' %}'">Users</button>
-<button onclick="location.href='{% url 'drafts' %}'">Pending definitions</button>
-<button onclick="location.href='{% url 'notifications' %}'">Notifications</button>
+{% if user_role == 'admin' %}
+    <button onclick="location.href='{% url 'logout' %}'">Logout</button>
+    <button onclick="location.href='{% url 'define' %}'">Add definition</button>
+    <button onclick="location.href='{% url 'users' %}'">Users</button>
+    <button onclick="location.href='{% url 'drafts' %}'">Pending definitions</button>
+    <button onclick="location.href='{% url 'notifications' %}'">Notifications</button>
+{% elif user_role == 'moderator' %}
+    <button onclick="location.href='{% url 'logout' %}'">Logout</button>
+    <button onclick="location.href='{% url 'define' %}'">Add definition</button>
+    <button onclick="location.href='{% url 'drafts' %}'">Pending definitions</button>
+    <button onclick="location.href='{% url 'notifications' %}'">Notifications</button>
+{% elif user_role == 'author' %}
+    <button onclick="location.href='{% url 'logout' %}'">Logout</button>
+    <button onclick="location.href='{% url 'define' %}'">Add definition</button>
+    <button onclick="location.href='{% url 'notifications' %}'">Notifications</button>
+{% elif user_role == 'visitor' %}
+    <button onclick="location.href='{% url 'logout' %}'">Logout</button>
+    <button onclick="location.href='{% url 'notifications' %}'">Notifications</button>
+{% endif %}
 
 
 <div class="search-container">

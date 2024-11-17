@@ -102,7 +102,8 @@ def search_view(request):
         return render(request, 'appwmlg/searchpage.html', {'definition': definition, 'message': message})
 
     else :
-        return render(request, 'appwmlg/searchpage.html')
+        user_role = request.session.get("userRole")
+        return render(request, 'appwmlg/searchpage.html', {'user_role': user_role})
 
 #################### This is the define view ####################
 #1) to pevent non authenticated users to get into this view we first check the

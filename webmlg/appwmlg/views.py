@@ -119,6 +119,8 @@ def define_view(request):
     
     if request.session.get("logedUser") != True:
         return redirect("login")
+    elif request.session["userRole"] not in ["author", "admin", "moderator"] :
+        return redirect("search")
     elif request.method == 'POST':
         acronym = request.POST.get('acronym')
         definition = request.POST.get('definition')
@@ -164,6 +166,8 @@ def addUser_view(request):
 
     if request.session.get("logedUser") != True:
         return redirect("login")
+    elif request.session["userRole"] not in ["admin"] :
+        return redirect("search")
     elif request.method == 'POST':
         username = request.POST.get('username')
         hire_date = request.POST.get('hire_date')
@@ -172,6 +176,7 @@ def addUser_view(request):
         user_email = request.POST.get('user_email')
         born_date = request.POST.get('born_date')
         notification = [[{
+                        "title": "Account creation",
                         "message": "Your account is activated now",
                         "timestamp": timezone.now(),
                         "read": False}]]
@@ -222,6 +227,8 @@ def addUser_view(request):
 def users_view(request):
     if request.session.get('logedUser') != True:
         return redirect('login')
+    elif request.session["userRole"] not in ["admin"] :
+        return redirect("search")
     else : 
         users = list(user_collection.find()) 
         print(users)
@@ -240,6 +247,8 @@ def users_view(request):
 def user_view(request, UserID):
     if request.session.get('logedUser') != True:
         return redirect('login')
+    elif request.session["userRole"] not in ["admin"] :
+        return redirect("search")
     else :
         user = user_collection.find_one({"UserID": UserID})
         return render(request, 'appwmlg/user.html', {'user': user})
@@ -253,7 +262,11 @@ def user_view(request, UserID):
 #and finally we redirect to the search page
 #######################################################################
 def user_update_view(request, UserID):
-    if request.method == 'POST':
+    if request.session.get('logedUser') != True:
+        return redirect('login')
+    elif request.session["userRole"] not in ["admin"] :
+        return redirect("search")    
+    elif request.method == 'POST':
         newRole = request.POST.get('role')
         newEmail = request.POST.get('email')
 
@@ -273,6 +286,8 @@ def user_update_view(request, UserID):
 def user_delete_view(request, UserID):
     if request.session.get('logedUser') != True:
         return redirect('login')
+    elif request.session["userRole"] not in ["admin"] :
+        return redirect("search")   
     elif request.method == 'POST':
         user_collection.delete_one({"UserID": UserID})
         return redirect('search')
@@ -288,8 +303,11 @@ def user_delete_view(request, UserID):
 def drafts_view(request):
     if request.session.get('logedUser') != True:
         return redirect('login')
+    elif request.session["userRole"] not in ["admin", "moderator"] :
+        return redirect("search")
     else : 
-        drafts = list(eng_definition_draft_collection.find()) 
+        #we only show the drafts that the current approver haven't appoved yet
+        drafts = list(eng_definition_draft_collection.find({"Approvers": {"$nin": [request.session.get('logedUserId')]}})) 
         print(drafts)
         return render(request, 'appwmlg/drafts.html', {'drafts': drafts})
 
@@ -306,6 +324,8 @@ def drafts_view(request):
 def draft_view(request, DraftID):
     if request.session.get('logedUser') != True:
         return redirect('login')
+    elif request.session["userRole"] not in ["admin", "moderator"] :
+        return redirect("search")
     else :
         draft = eng_definition_draft_collection.find_one({"DraftID": DraftID})
         return render(request, 'appwmlg/draft.html', {'draft': draft})
@@ -331,6 +351,8 @@ def approve_draft_view(request, DraftID):
 
     if request.session.get('logedUser') != True:
         return redirect('login')
+    elif request.session["userRole"] not in ["admin", "moderator"] :
+        return redirect("search")
     
     draft = eng_definition_draft_collection.find_one({"DraftID": DraftID})
 
@@ -368,7 +390,13 @@ def approve_draft_view(request, DraftID):
         })
         insertedDf_id = insertedDf.inserted_id
         eng_definition_collection.update_one({"_id": insertedDf_id}, {"$set": {"DfID": str(insertedDf_id)}}) 
-   
+        
+        title = f"Your submitted draft  {draft['Acronym']} is live now"
+        user_collection.update_one({"UserID": authorID}, {"$push": {"Notifications":[{
+            "title": title,
+            "message": "You draft has been approved",
+            "timestamp": timezone.now(),
+            "read": False}]}})
         eng_definition_draft_collection.delete_one({"DraftID": DraftID})
         return redirect('search')
 
@@ -386,14 +414,18 @@ def delete_draft_view(request, DraftID):
 
     if request.session.get('logedUser') != True:
         return redirect('login')
+    elif request.session["userRole"] not in ["admin", "moderator"] :
+        return redirect("search")
     
     draft = eng_definition_draft_collection.find_one({"DraftID": DraftID})
     if request.method == "POST":
         authorID = draft['DefinitionAuthorID']
-        reason = request.POST.get("reason")  
+        reason = request.POST.get("reason") 
+        title = f"Your submitted draft  {draft['Acronym']} was rejected"
 
         eng_definition_draft_collection.delete_one({"DraftID": DraftID})
         user_collection.update_one({"UserID": authorID}, {"$push": {"Notifications":[{
+            "title": title,
             "message": reason,
             "timestamp": timezone.now(),
             "read": False}]}})

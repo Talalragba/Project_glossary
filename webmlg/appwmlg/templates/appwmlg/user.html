@@ -22,7 +22,7 @@
         <option value="admin" {% if user.UserRole == 'admin' %}selected{% endif %}>Admin</option>
         <option value="moderator" {% if user.UserRole == 'moderator' %}selected{% endif %}>Moderator</option>
         <option value="author" {% if user.UserRole == 'author' %}selected{% endif %}>Author</option>        
-        <option value="visitor" {% if user.UserRole == 'visitor' %}selected{% endif %}>Vistor</option>
+        <option value="visitor" {% if user.UserRole == 'visitor' %}selected{% endif %}>Visitor</option>
     </select><br>
     <button type="submit">Update</button>
 </form>

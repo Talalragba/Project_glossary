@@ -26,12 +26,12 @@ user_credentials = dbft['userCredentials']
 
 #################### This is the login view ####################
 #In this view we get the username and password from the login page
-#then we look if the user attempting to login is exist in the userCollection 
+#then we look if the user attempting to login does exist in the userCollection 
 #so if yes we create a session where we store logedUser (boolen value), 
 #username and userRole (we might add other parameters as the project evolve)
 #after that we redirect the user to the search page, but if not exist in 
 #the userCollection we send a message using django.contrib's messages library
-#and we redirect to login page again else if now one is attempting to login
+#and we redirect to login page again else if no one is attempting to login
 #we just render the login page
 #################################################################
 def login_view(request):
@@ -57,16 +57,10 @@ def login_view(request):
             #the language that he choses for the App and eventually       #
             #his id which is the objectId associated to his user document #
             ###############################################################
-            print(request.session.get("logedUser"))
-            print(request.session.get("username"))
-            print(request.session.get("userRole"))
-            print(request.session.get("logedUserId"))
-            return redirect('search')  # Ensure this matches your URL pattern name for the search page
+            return redirect('search')
         else:
             messages.error(request, "Invalid credentials")
             return redirect("login")
-            print("Login failed: Invalid credentials")  # Debugging line
-            #return render(request, 'appwmlg/index.html', {"error": "Invalid username or password"})
 
     return render(request, 'appwmlg/index.html')
 
@@ -83,11 +77,11 @@ def logout_view(request):
 #until the user type in an acronym if it is exit in the engDefinitionCollection
 #we then show the user the definition of the acronym but if not we show him
 #that "The acronym doesn't exist"
-##################################################################
+#################################################################
 def search_view(request):
     if request.session.get("logedUser") != True :
         return redirect("login")
-    elif 'acronym' in request.GET:
+    if 'acronym' in request.GET:
 
         docDef = None
         message = None
@@ -99,7 +93,9 @@ def search_view(request):
             definition = docDef["Definition"]  
         else:
             message = "The acronym doesn't exist."
-        return render(request, 'appwmlg/searchpage.html', {'definition': definition, 'message': message})
+
+        user_role = request.session.get("userRole")
+        return render(request, 'appwmlg/searchpage.html', {'user_role': user_role, 'definition': definition, 'message': message})
 
     else :
         user_role = request.session.get("userRole")
@@ -118,11 +114,11 @@ def search_view(request):
 #################################################################
 def define_view(request):
     
-    if request.session.get("logedUser") != True:
+    if request.session.get("logedUser") != True :
         return redirect("login")
-    elif request.session["userRole"] not in ["author", "admin", "moderator"] :
+    if request.session["userRole"] not in ["author", "reviewer", "approver"] :
         return redirect("search")
-    elif request.method == 'POST':
+    if request.method == 'POST':
         acronym = request.POST.get('acronym')
         definition = request.POST.get('definition')
         source = request.POST.get('source')
@@ -141,16 +137,18 @@ def define_view(request):
             "DefinitionAuthor": definition_author,
             "DefinitionAuthorID": definition_author_id,
             "Approvers": [],
-            "ApproversNumber": 0 
+            "ApproversNumber": 0, 
+            "Reviewers": [],
+            "ReviewersNumber": 0, 
+            "Status" : "inReview"           
         })
         insertedDraft_id = insertedDraft.inserted_id
         eng_definition_draft_collection.update_one({"_id": insertedDraft_id}, {"$set": {"DraftID": str(insertedDraft_id)}}) 
 
         
-        return redirect('search')  # Redirect to search page or another page after submission
-
+        return redirect('search') 
+    
     else :
-        #print(request.session.get("username"))
         return render(request, 'appwmlg/define.html')
 
 #################### This is the addUser view ####################
@@ -167,13 +165,13 @@ def addUser_view(request):
 
     if request.session.get("logedUser") != True:
         return redirect("login")
-    elif request.session["userRole"] not in ["admin"] :
+    if request.session["userRole"] not in ["admin"] :
         return redirect("search")
-    elif request.method == 'POST':
+    if request.method == 'POST':
         username = request.POST.get('username')
         hire_date = request.POST.get('hire_date')
         user_role = request.POST.get('user_role')
-        user_languages = request.POST.getlist('languages')  # Get multiple selections as a list
+        user_languages = request.POST.getlist('languages')
         user_email = request.POST.get('user_email')
         born_date = request.POST.get('born_date')
         notification = [[{
@@ -228,7 +226,8 @@ def addUser_view(request):
 def users_view(request):
     if request.session.get('logedUser') != True:
         return redirect('login')
-    elif request.session["userRole"] not in ["admin"] :
+    
+    if request.session["userRole"] not in ["admin"] :
         return redirect("search")
     else : 
         users = list(user_collection.find()) 
@@ -248,7 +247,8 @@ def users_view(request):
 def user_view(request, UserID):
     if request.session.get('logedUser') != True:
         return redirect('login')
-    elif request.session["userRole"] not in ["admin"] :
+    
+    if request.session["userRole"] not in ["admin"] :
         return redirect("search")
     else :
         user = user_collection.find_one({"UserID": UserID})
@@ -265,9 +265,9 @@ def user_view(request, UserID):
 def user_update_view(request, UserID):
     if request.session.get('logedUser') != True:
         return redirect('login')
-    elif request.session["userRole"] not in ["admin"] :
+    if request.session["userRole"] not in ["admin"] :
         return redirect("search")    
-    elif request.method == 'POST':
+    if request.method == 'POST':
         newRole = request.POST.get('role')
         newEmail = request.POST.get('email')
 
@@ -287,9 +287,9 @@ def user_update_view(request, UserID):
 def user_delete_view(request, UserID):
     if request.session.get('logedUser') != True:
         return redirect('login')
-    elif request.session["userRole"] not in ["admin"] :
+    if request.session["userRole"] not in ["admin"] :
         return redirect("search")   
-    elif request.method == 'POST':
+    if request.method == 'POST':
         user_collection.delete_one({"UserID": UserID})
         return redirect('search')
 
@@ -304,12 +304,21 @@ def user_delete_view(request, UserID):
 def drafts_view(request):
     if request.session.get('logedUser') != True:
         return redirect('login')
-    elif request.session["userRole"] not in ["admin", "moderator"] :
+    if request.session["userRole"] not in ["approver", "reviewer"] :
         return redirect("search")
+    if request.session["userRole"] == "reviewer" :
+        drafts = list(eng_definition_draft_collection.find({
+            "Status": "inReview",
+            "DefinitionAuthorID": {"$nin": [request.session.get('logedUserId')]},
+            "Reviewers": {"$nin": [request.session.get('logedUserId')]}
+        }))
+        return render(request, 'appwmlg/drafts.html', {'drafts': drafts})        
     else : 
-        #we only show the drafts that the current approver haven't appoved yet
-        drafts = list(eng_definition_draft_collection.find({"Approvers": {"$nin": [request.session.get('logedUserId')]}})) 
-        print(drafts)
+        drafts = list(eng_definition_draft_collection.find({
+            "Approvers": {"$nin": [request.session.get('logedUserId')]},
+            "DefinitionAuthorID": {"$nin": [request.session.get('logedUserId')]},
+            "Reviewers": {"$nin": [request.session.get('logedUserId')]}
+        }))
         return render(request, 'appwmlg/drafts.html', {'drafts': drafts})
 
 #################### This is the user update view ####################
@@ -323,9 +332,10 @@ def drafts_view(request):
 #into a variable called draft which is then passed to the draft page as a parameter
 ######################################################################
 def draft_view(request, DraftID):
-    if request.session.get('logedUser') != True:
+    if request.session.get('logedUser') != True :
         return redirect('login')
-    elif request.session["userRole"] not in ["admin", "moderator"] :
+    
+    if request.session["userRole"] not in ["approver", "reviewer"] :
         return redirect("search")
     else :
         draft = eng_definition_draft_collection.find_one({"DraftID": DraftID})
@@ -350,20 +360,23 @@ to prevent that
 '''
 def approve_draft_view(request, DraftID): 
 
-    if request.session.get('logedUser') != True:
+    if request.session.get('logedUser') != True :
         return redirect('login')
-    elif request.session["userRole"] not in ["admin", "moderator"] :
+    if request.session["userRole"] not in ["approver", "reviewer"] :
         return redirect("search")
     
     draft = eng_definition_draft_collection.find_one({"DraftID": DraftID})
+ 
+    # in any case by accedent the approver or the reviewer know how to write the url of a draft directly into the browser so they can't approve two or more times the same draft.
+    if (request.session.get("logedUserId") in draft['Approvers']) or (request.session.get("logedUserId") in draft['Reviewers']) or (request.session.get("logedUserId") in draft['DefinitionAuthorID']) : 
+        return redirect('search')  
 
-    if request.session.get("logedUserId") in draft['Approvers']: # in any case the by accedent the moderator know how to write the url of a draft directly into the browser so he can't approve two or more times the same draft.
-        return redirect('search')
-    
-    if draft['ApproversNumber'] != 2 :
-        approvers_number = draft['ApproversNumber'] + 1
-        approver = draft['Approvers'] + [request.session.get("logedUserId")]
-        eng_definition_draft_collection.update_one({"DraftID": DraftID}, {"$set": {"Approvers": approver, "ApproversNumber": approvers_number}})
+    if draft['ReviewersNumber'] != 2 :
+        reviewers_number = draft['ReviewersNumber'] + 1
+        reviewer = draft['Reviewers'] + [request.session.get("logedUserId")]
+        eng_definition_draft_collection.update_one({"DraftID": DraftID}, {"$set": {"Reviewers": reviewer, "ReviewersNumber": reviewers_number}})
+        if reviewers_number == 2 :
+            eng_definition_draft_collection.update_one({"DraftID": DraftID}, {"$set": {"Status": "waitingForApproval"}})
         return redirect('search')
     else :
         approvers_number = draft['ApproversNumber'] + 1
@@ -371,10 +384,10 @@ def approve_draft_view(request, DraftID):
         definition_date = timezone.now()
         
         count = eng_definition_collection.count_documents({"Acronym": draft['Acronym']})
-        dfs = eng_definition_collection.find({"Acronym": draft['Acronym']}) # The existing definition that with the same acronym
+        dfs = eng_definition_collection.find({"Acronym": draft['Acronym']}) # The existing definition with the same acronym
 
         for df in dfs : 
-            eng_definition_collection.update_one({"DfID": df['DfID']}, {"$set": {"ActualDefinition": False}})
+            eng_definition_collection.update_one({"DefinitionID": df['DefinitionID']}, {"$set": {"ActualDefinition": False}})
         
         insertedDf = eng_definition_collection.insert_one({
             "Acronym": draft['Acronym'],
@@ -383,19 +396,19 @@ def approve_draft_view(request, DraftID):
             "Industry": draft['Industry'],
             "DefinitionDate": definition_date,
             "DefinitionAuthor": draft['DefinitionAuthor'],
-            "DefinitionAuthorID": draft['DefinitionAuthorID'],          
+            "DefinitionAuthorID": draft['DefinitionAuthorID'],      
+            "Reviewers": draft['Reviewers'],
             "Approvers": [approver],
-            "ApproversNumber": approvers_number,
             "ActualDefinition": True,
             "DefinitionVersion": count+1
         })
         insertedDf_id = insertedDf.inserted_id
-        eng_definition_collection.update_one({"_id": insertedDf_id}, {"$set": {"DfID": str(insertedDf_id)}}) 
+        eng_definition_collection.update_one({"_id": insertedDf_id}, {"$set": {"DefinitionID": str(insertedDf_id)}}) 
         
         title = f"Your submitted draft  {draft['Acronym']} is live now"
-        user_collection.update_one({"UserID": authorID}, {"$push": {"Notifications":[{
+        user_collection.update_one({"UserID": draft['DefinitionAuthorID']}, {"$push": {"Notifications":[{
             "title": title,
-            "message": "You draft has been approved",
+            "message": "You definition has been approved",
             "timestamp": timezone.now(),
             "read": False}]}})
         eng_definition_draft_collection.delete_one({"DraftID": DraftID})
@@ -415,7 +428,7 @@ def delete_draft_view(request, DraftID):
 
     if request.session.get('logedUser') != True:
         return redirect('login')
-    elif request.session["userRole"] not in ["admin", "moderator"] :
+    if request.session["userRole"] not in ["approver", "reviewer"] :
         return redirect("search")
     
     draft = eng_definition_draft_collection.find_one({"DraftID": DraftID})

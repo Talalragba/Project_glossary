@@ -17,11 +17,14 @@
 
 {% if user_role == 'admin' %}
     <button onclick="location.href='{% url 'logout' %}'">Logout</button>
-    <button onclick="location.href='{% url 'define' %}'">Add definition</button>
     <button onclick="location.href='{% url 'users' %}'">Users</button>
+    <button onclick="location.href='{% url 'notifications' %}'">Notifications</button>
+{% elif user_role == 'reviewer' %}
+    <button onclick="location.href='{% url 'logout' %}'">Logout</button>
+    <button onclick="location.href='{% url 'define' %}'">Add definition</button>
     <button onclick="location.href='{% url 'drafts' %}'">Pending definitions</button>
     <button onclick="location.href='{% url 'notifications' %}'">Notifications</button>
-{% elif user_role == 'moderator' %}
+{% elif user_role == 'approver' %}
     <button onclick="location.href='{% url 'logout' %}'">Logout</button>
     <button onclick="location.href='{% url 'define' %}'">Add definition</button>
     <button onclick="location.href='{% url 'drafts' %}'">Pending definitions</button>

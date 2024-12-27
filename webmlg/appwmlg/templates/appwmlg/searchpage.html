@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barre de Recherche - Thème Bleu</title>
+    <title>{{languageFile.searchpage.Search_page}}</title>
     <style>
         /* custom styles will be added here */
         .result-message {
@@ -16,39 +16,39 @@
 <body>
 
 {% if user_role == 'admin' %}
-    <button onclick="location.href='{% url 'logout' %}'">Logout</button>
-    <button onclick="location.href='{% url 'users' %}'">Users</button>
-    <button onclick="location.href='{% url 'notifications' %}'">Notifications</button>
+    <button onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
+    <button onclick="location.href='{% url 'users' %}'">{{languageFile.searchpage.Users}}</button>
+    <button onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
 {% elif user_role == 'reviewer' %}
-    <button onclick="location.href='{% url 'logout' %}'">Logout</button>
-    <button onclick="location.href='{% url 'define' %}'">Add definition</button>
-    <button onclick="location.href='{% url 'drafts' %}'">Pending definitions</button>
-    <button onclick="location.href='{% url 'notifications' %}'">Notifications</button>
+    <button onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
+    <button onclick="location.href='{% url 'define' %}'">{{languageFile.searchpage.Add_definition}}</button>
+    <button onclick="location.href='{% url 'drafts' %}'">{{languageFile.searchpage.Pending_definitions}}</button>
+    <button onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
 {% elif user_role == 'approver' %}
-    <button onclick="location.href='{% url 'logout' %}'">Logout</button>
-    <button onclick="location.href='{% url 'define' %}'">Add definition</button>
-    <button onclick="location.href='{% url 'drafts' %}'">Pending definitions</button>
-    <button onclick="location.href='{% url 'notifications' %}'">Notifications</button>
+    <button onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
+    <button onclick="location.href='{% url 'define' %}'">{{languageFile.searchpage.Add_definition}}</button>
+    <button onclick="location.href='{% url 'drafts' %}'">{{languageFile.searchpage.Pending_definitions}}</button>
+    <button onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
 {% elif user_role == 'author' %}
-    <button onclick="location.href='{% url 'logout' %}'">Logout</button>
-    <button onclick="location.href='{% url 'define' %}'">Add definition</button>
-    <button onclick="location.href='{% url 'notifications' %}'">Notifications</button>
+    <button onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
+    <button onclick="location.href='{% url 'define' %}'">{{languageFile.searchpage.Add_definition}}</button>
+    <button onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
 {% elif user_role == 'visitor' %}
-    <button onclick="location.href='{% url 'logout' %}'">Logout</button>
-    <button onclick="location.href='{% url 'notifications' %}'">Notifications</button>
+    <button onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
+    <button onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
 {% endif %}
 
 
 <div class="search-container">
     <form method="GET" action="{% url 'search' %}">
-        <input type="text" id="searchInput" name="acronym" placeholder="Rechercher..." required>
-        <button type="submit">Search</button>
+        <input type="text" id="searchInput" name="acronym" placeholder="Search..." required>
+        <button type="submit">{{languageFile.searchpage.Search}}</button>
     </form>
     
     <div class="results" id="resultsContainer">
         {% if definition %}
             <div class="result-message">
-                <strong>Définition:</strong> {{ definition }}
+                <strong>{{languageFile.searchpage.Definition}}</strong> {{ definition }}
             </div>
         {% elif message %}
             <div class="result-message">

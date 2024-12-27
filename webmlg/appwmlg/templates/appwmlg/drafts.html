@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Definitions Draft</title>
+    <title>{{languageFile.drafts.Definitions_Draft}}</title>
     <style>
         /* custom styles will be added here */
     </style>
 </head>
 <body>
 
-<button onclick="location.href='{% url 'logout' %}'">Logout</button>
+<button onclick="location.href='{% url 'logout' %}'">{{languageFile.drafts.Logout}}</button>
 
-<h1>Draft List</h1>
+<h1>{{languageFile.drafts.Draft_List}}</h1>
 <ul>
     {% for draft in drafts %}
     <li><a href="{% url 'draft' draft.DraftID %}">{{ draft.Acronym }}</a></li>

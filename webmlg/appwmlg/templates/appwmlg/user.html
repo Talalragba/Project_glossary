@@ -3,38 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User</title>
+    <title>{{languageFile.user.User}}</title>
     <style>
         /* custom styles will be added here */
     </style>
 </head>
 <body>
 
-<button onclick="location.href='{% url 'logout' %}'">Logout</button>
+<button onclick="location.href='{% url 'logout' %}'">{{languageFile.user.Logout}}</button>
 
-<h1>User Details for {{ user.UserName }}</h1>
+<h1>{{languageFile.user.User_Details_for}} {{ user.UserName }}</h1>
 <form method="POST" action="{% url 'userUpdate' user.UserID %}">
     {% csrf_token %}
-    <label for="email">Email:</label>
+    <label for="email">{{languageFile.user.Email}}</label>
     <input type="email" id="email" name="email" value="{{ user.UserEmail }}" required><br>
-    <label for="role">Role:</label>
+    <label for="role">{{languageFile.user.Role}}</label>
     <select id="role" name="role" required>
-        <option value="admin" {% if user.UserRole == 'admin' %}selected{% endif %}>Admin</option>
-        <option value="approver" {% if user.UserRole == 'approver' %}selected{% endif %}>Approver</option>
-        <option value="reviewer" {% if user.UserRole == 'reviewer' %}selected{% endif %}>Reviewer</option>
-        <option value="author" {% if user.UserRole == 'author' %}selected{% endif %}>Author</option>        
-        <option value="visitor" {% if user.UserRole == 'visitor' %}selected{% endif %}>Visitor</option>
+        <option value="admin" {% if user.UserRole == 'admin' %}selected{% endif %}>{{languageFile.user.Admin}}</option>
+        <option value="approver" {% if user.UserRole == 'approver' %}selected{% endif %}>{{languageFile.user.Approver}}</option>
+        <option value="reviewer" {% if user.UserRole == 'reviewer' %}selected{% endif %}>{{languageFile.user.Reviewer}}</option>
+        <option value="author" {% if user.UserRole == 'author' %}selected{% endif %}>{{languageFile.user.Author}}</option>        
+        <option value="visitor" {% if user.UserRole == 'visitor' %}selected{% endif %}>{{languageFile.user.Visitor}}</option>
     </select><br>
-    <button type="submit">Update</button>
+    <button type="submit">{{languageFile.user.Update}}</button>
 </form>
-<p><strong>Languages:</strong> {{ user.UserLanguages|join:", " }}</p>
-<p><strong>Hire Date:</strong> {{ user.HireDate }}</p>
-<p><strong>Born Date:</strong> {{ user.BornDate }}</p>
-<p><strong>User Role:</strong> {{ user.UserRole }}</p>
+<p><strong>{{languageFile.user.Languages}}</strong> {{ user.UserLanguages|join:", " }}</p>
+<p><strong>{{languageFile.user.Hire_Date}}</strong> {{ user.HireDate }}</p>
+<p><strong>{{languageFile.user.Born_Date}}</strong> {{ user.BornDate }}</p>
+<p><strong>{{languageFile.user.User_Role}}</strong> {{ user.UserRole }}</p>
 
 <form method="POST" action="{% url 'userDelete' user.UserID %}" style="display:inline;">
     {% csrf_token %}
-    <button type="submit">Delete User</button>
+    <button type="submit">{{languageFile.user.Delete_User}}</button>
 </form>
 
 </body>

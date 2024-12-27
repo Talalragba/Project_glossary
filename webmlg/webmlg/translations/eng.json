@@ -1,0 +1,119 @@
+{
+    "addUser" :{
+        "Logout": "Logout",
+        "Add_user": "Add user",
+        "Add_new_user": "Add new user",
+        "Username": "Username :",
+        "Hire_date": "Hire date :",
+        "User_role": "User role :",
+        "Admin": "Admin",
+        "Approver": "Approver",
+        "Reviewer": "Reviewer",
+        "Author": "Author",
+        "Visitor": "Visitor",
+        "Languages": "Languages :",
+        "English": "English",
+        "French": "French",
+        "German": "German",
+        "Email": "Email :",
+        "Born_date": "Born date :",
+        "Add": "Add :"
+    }, 
+    "define" :{
+        "Add_new_definition": "Add new definition",
+        "Logout": "Logout",
+        "Acronym": "Acronym :",
+        "Definition": "Definition :",
+        "Source": "Source :",
+        "Industry": "Industry :",
+        "Pharma": "Pharma",
+        "Electrical_Engineering": "Electrical Engineering",
+        "Civil_Engineering": "Civil Engineering",
+        "Mechanical_Engineering": "Mechanical Engineering",
+        "Submit": "Submit"       
+    },
+    "deleteDraft" :{
+        "Notifications": "Notifications",
+        "Logout": "Logout",
+        "Delete_Draft": "Delete Draft :",
+        "Why_are_you_deleting_this_draft": "Why are you deleting this draft?",
+        "Definition_is_not_complete": "Definition is not complete",
+        "Definition_already_exists": "Definition already exists",
+        "Other": "Other"
+    },
+    "draft" :{
+        "Definition_Draft": "Definition Draft",
+        "Logout": "Logout",
+        "Acronym": "Acronym :",
+        "Definition": "Definition :",
+        "Source": "Source :",
+        "Definition_Submission_Date": "Definition Submission Date :",
+        "Approve_Draft": "Approve Draft",
+        "Delete_Draft": "Delete Draft"
+
+    },
+    "drafts" :{
+        "Definitions_Draft": "Definitions Draft",
+        "Logout": "Logout",
+        "Draft_List": "Draft List"   
+
+    },
+    "index" :{
+        "Home_Page_Login": "Home Page - Login",
+        "Multilingual_Glossary": "Multilingual Glossary",
+        "Login": "Login",
+        "Please_enter_your_username_and_password_to_log_in.": "Please enter your username and password to log in.",
+        "Username": "Username :",
+        "Password": "Password :",
+        "Show_Password": "Show Password"
+
+    },
+    "notification" :{
+        "Notifications": "Notifications",
+        "Logout": "Logout",
+        "You_have_got_this_notification": "You have got this notification :"
+
+    },
+    "notifications" :{
+        "Definition": "Definition",
+        "Logout": "Logout",
+        "Notifications_List": "Notifications List"
+    },
+    "searchpage" :{
+        "Search_page": "Search page",
+        "Logout": "Logout",
+        "Users": "Users",
+        "Notifications": "Notifications",
+        "Add_definition": "Add definition",
+        "Pending_definitions": "Pending definitions",
+        "Search": "Search",
+        "Definition": "Definition :"
+
+    },
+    "user" :{
+        "User": "User",
+        "Logout": "Logout",
+        "User_Details_for": "User Details for :",
+        "Email": "Email :",
+        "Role": "Role :",
+        "Admin": "Admin",
+        "Approver": "Approver",
+        "Reviewer": "Reviewer",
+        "Author": "Author",
+        "Visitor": "Visitor",
+        "Update": "Update",
+        "Languages": "Languages :",
+        "Hire_Date": "Hire Date :",
+        "Born_Date": "Born Date :",
+        "User_Role": "User Role :",
+        "Delete_User": "Delete User"
+
+    },
+    "users" :{
+        "Users_List": "Users List",
+        "Logout": "Logout",
+        "Add_new_user": "Add new user"
+    }  
+    
+}
+  

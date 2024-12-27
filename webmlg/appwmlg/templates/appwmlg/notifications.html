@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Definition</title>
+    <title>{{languageFile.notifications.Definition}}</title>
     <style>
         /* custom styles will be added here */
     </style>
 </head>
 <body>
 
-<button onclick="location.href='{% url 'logout' %}'">Logout</button>
+<button onclick="location.href='{% url 'logout' %}'">{{languageFile.notifications.Logout}}</button>
 
-<h1>Notifications List</h1>
+<h1>{{languageFile.notifications.Notifications_List}}</h1>
 
 <ul>
     {% for notification_list in user.Notifications %}

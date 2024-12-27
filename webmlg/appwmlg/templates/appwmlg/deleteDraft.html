@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notifications</title>
+    <title>{{languageFile.deleteDraft.Notifications}}</title>
     <style>
         /* custom styles will be added here */
     </style>
 </head>
 <body>
 
-<button onclick="location.href='{% url 'logout' %}'">Logout</button>
+<button onclick="location.href='{% url 'logout' %}'">{{languageFile.deleteDraft.Logout}}</button>
 
-<h1>Delete Draft: {{ draft.Acronym }}</h1>
+<h1>{{languageFile.deleteDraft.Delete_Draft}} {{ draft.Acronym }}</h1>
 <form method="post">
     {% csrf_token %}
-    <label for="reason">Why are you deleting this draft?</label><br>
+    <label for="reason">{{languageFile.deleteDraft.Why_are_you_deleting_this_draft}}</label><br>
     <select name="reason" id="reason" required>
-        <option value="definition is not complete">Definition is not complete</option>
-        <option value="definition already exists">Definition already exists</option>
-        <option value="other">Other</option>
+        <option value="definition is not complete">{{languageFile.deleteDraft.Definition_is_not_complete}}</option>
+        <option value="definition already exists">{{languageFile.deleteDraft.Definition_already_exists}}</option>
+        <option value="other">{{languageFile.deleteDraft.Other}}</option>
     </select><br><br>
-    <button type="submit">Delete Draft</button>
+    <button type="submit">{{languageFile.deleteDraft.Delete_Draft}}</button>
 </form>
 
 </body>

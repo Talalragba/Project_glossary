@@ -1,0 +1,111 @@
+{
+    "addUser": {
+        "Logout": "Abmelden",
+        "Add_user": "Benutzer hinzufügen",
+        "Add_new_user": "Neuen Benutzer hinzufügen",
+        "Username": "Benutzername :",
+        "Hire_date": "Einstellungsdatum :",
+        "User_role": "Benutzerrolle :",
+        "Admin": "Administrator",
+        "Approver": "Genehmiger",
+        "Reviewer": "Überprüfer",
+        "Author": "Autor",
+        "Visitor": "Besucher",
+        "Languages": "Sprachen :",
+        "English": "Englisch",
+        "French": "Französisch",
+        "German": "Deutsch",
+        "Email": "E-Mail :",
+        "Born_date": "Geburtsdatum :",
+        "Add": "Hinzufügen :"
+    },
+    "define": {
+        "Add_new_definition": "Neue Definition hinzufügen",
+        "Logout": "Abmelden",
+        "Acronym": "Akronym :",
+        "Definition": "Definition :",
+        "Source": "Quelle :",
+        "Industry": "Branche :",
+        "Pharma": "Pharma",
+        "Electrical_Engineering": "Elektrotechnik",
+        "Civil_Engineering": "Bauingenieurwesen",
+        "Mechanical_Engineering": "Maschinenbau",
+        "Submit": "Einreichen"
+    },
+    "deleteDraft": {
+        "Notifications": "Benachrichtigungen",
+        "Logout": "Abmelden",
+        "Delete_Draft": "Entwurf löschen :",
+        "Why_are_you_deleting_this_draft": "Warum löschen Sie diesen Entwurf?",
+        "Definition_is_not_complete": "Definition ist nicht vollständig",
+        "Definition_already_exists": "Definition existiert bereits",
+        "Other": "Andere"
+    },
+    "draft": {
+        "Definition_Draft": "Entwurf der Definition",
+        "Logout": "Abmelden",
+        "Acronym": "Akronym :",
+        "Definition": "Definition :",
+        "Source": "Quelle :",
+        "Definition_Submission_Date": "Datum der Einreichung der Definition :",
+        "Approve_Draft": "Entwurf genehmigen",
+        "Delete_Draft": "Entwurf löschen"
+    },
+    "drafts": {
+        "Definitions_Draft": "Entwürfe der Definitionen",
+        "Logout": "Abmelden",
+        "Draft_List": "Entwurfsliste"
+    },
+    "index": {
+        "Home_Page_Login": "Startseite - Anmeldung",
+        "Multilingual_Glossary": "Mehrsprachiges Glossar",
+        "Login": "Anmelden",
+        "Please_enter_your_username_and_password_to_log_in.": "Bitte geben Sie Ihren Benutzernamen und Ihr Passwort ein, um sich anzumelden.",
+        "Username": "Benutzername :",
+        "Password": "Passwort :",
+        "Show_Password": "Passwort anzeigen"
+    },
+    "notification": {
+        "Notifications": "Benachrichtigungen",
+        "Logout": "Abmelden",
+        "You_have_got_this_notification": "Sie haben diese Benachrichtigung erhalten :"
+    },
+    "notifications": {
+        "Definition": "Definition",
+        "Logout": "Abmelden",
+        "Notifications_List": "Benachrichtigungsliste"
+    },
+    "searchpage": {
+        "Search_page": "Suchseite",
+        "Logout": "Abmelden",
+        "Users": "Benutzer",
+        "Notifications": "Benachrichtigungen",
+        "Add_definition": "Definition hinzufügen",
+        "Pending_definitions": "Ausstehende Definitionen",
+        "Search": "Suche",
+        "Definition": "Definition :"
+    },
+    "user": {
+        "User": "Benutzer",
+        "Logout": "Abmelden",
+        "User_Details_for": "Benutzerdetails für :",
+        "Email": "E-Mail :",
+        "Role": "Role :",
+        "Admin": "Administrator",
+        "Approver": "Genehmiger",
+        "Reviewer": "Überprüfer",
+        "Author": "Autor",
+        "Visitor": "Besucher",
+        "Update": "Aktualisieren",
+        "Languages": "Sprachen :",
+        "Hire_Date": "Einstellungsdatum :",
+        "Born_Date": "Geburtsdatum :",
+        "User_Role": "Benutzerrolle :",
+        "Delete_User": "Benutzer löschen"
+    },
+    "users": {
+        "Users_List": "Benutzerliste",
+        "Logout": "Abmelden",
+        "Add_new_user": "Neuen Benutzer hinzufügen"
+    }
+}

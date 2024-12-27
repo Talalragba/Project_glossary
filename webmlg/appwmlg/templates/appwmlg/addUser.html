@@ -4,62 +4,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add user</title>
+    <title>{{languageFile.addUser.Add_user}}</title>
     <style>
         /* custom styles will be added here */
     </style>
 </head>
 <body>
 
-<button onclick="location.href='{% url 'logout' %}'">Logout</button>
+<button onclick="location.href='{% url 'logout' %}'">{{languageFile.addUser.Logout}}</button>
 
 <div class="form-container">
-    <h2>Add new user</h2>
+    <h2>{{languageFile.addUser.Add_new_user}}</h2>
     <form action="{% url 'addUser' %}" method="post">
         {% csrf_token %}
 
         <!-- User name field -->
-        <label for="username">Username :</label>
+        <label for="username">{{languageFile.addUser.Username}}</label>
         <input type="text" id="username" name="username" pattern="[A-Za-z0-9\s]{1,30}" title="Only Latin characters, max 30" required>
         <br>
 
         <!-- Hire date field -->
-        <label for="hire_date">Hire date :</label>
+        <label for="hire_date">{{languageFile.addUser.Hire_date}}</label>
         <input type="date" id="hire_date" name="hire_date" required>
         <br>
 
         <!-- User role field -->
-        <label for="user_role">User role :</label>
+        <label for="user_role">{{languageFile.addUser.User_role}}</label>
         <select id="user_role" name="user_role" required>
-            <option value="admin">Admin</option>
-            <option value="approver">Approver</option>
-            <option value="reviewer">Reviewer</option>
-            <option value="author">Author</option>
-            <option value="visitor">Visitor</option>
+            <option value="admin">{{languageFile.addUser.Admin}}</option>
+            <option value="approver">{{languageFile.addUser.Approver}}</option>
+            <option value="reviewer">{{languageFile.addUser.Reviewer}}</option>
+            <option value="author">{{languageFile.addUser.Author}}</option>
+            <option value="visitor">{{languageFile.addUser.Visitor}}</option>
         </select>
         <br>
 
         <!-- User languages field -->
-        <label>Languages :</label><br>
+        <label>{{languageFile.addUser.Languages}}</label><br>
         <input type="checkbox" id="lang_eng" name="languages" value="Eng">
-        <label for="lang_eng">English</label><br>
+        <label for="lang_eng">{{languageFile.addUser.English}}</label><br>
         <input type="checkbox" id="lang_fr" name="languages" value="Fr">
-        <label for="lang_fr">French</label><br>
+        <label for="lang_fr">{{languageFile.addUser.French}}</label><br>
         <input type="checkbox" id="lang_de" name="languages" value="De">
-        <label for="lang_de">German</label><br>
+        <label for="lang_de">{{languageFile.addUser.German}}</label><br>
         <br>
 
         <!-- User email field -->
-        <label for="user_email">Email :</label>
+        <label for="user_email">{{languageFile.addUser.Email}}</label>
         <input type="email" id="user_email" name="user_email" required>
         <br>
 
         <!-- Born date field -->
-        <label for="born_date">Born date :</label>
+        <label for="born_date">{{languageFile.addUser.Born_date}}</label>
         <input type="date" id="born_date" name="born_date" required>
         <br>
         
-        <button type="submit">Add</button>
+        <button type="submit">{{languageFile.addUser.Add}}</button>
     </form>
 </div>
 

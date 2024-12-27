@@ -1,0 +1,111 @@
+{
+    "addUser": {
+        "Logout": "Déconnexion",
+        "Add_user": "Ajouter un utilisateur",
+        "Add_new_user": "Ajouter un nouvel utilisateur",
+        "Username": "Nom d'utilisateur :",
+        "Hire_date": "Date d'embauche :",
+        "User_role": "Rôle de l'utilisateur :",
+        "Admin": "Administrateur",
+        "Approver": "Approuveur",
+        "Reviewer": "Réviseur",
+        "Author": "Auteur",
+        "Visitor": "Visiteur",
+        "Languages": "Langues :",
+        "English": "Anglais",
+        "French": "Français",
+        "German": "Allemand",
+        "Email": "Email :",
+        "Born_date": "Date de naissance :",
+        "Add": "Ajouter :"
+    },
+    "define": {
+        "Add_new_definition": "Ajouter une nouvelle définition",
+        "Logout": "Déconnexion",
+        "Acronym": "Acronyme :",
+        "Definition": "Définition :",
+        "Source": "Source :",
+        "Industry": "Industrie :",
+        "Pharma": "Pharma",
+        "Electrical_Engineering": "Ingénierie Électrique",
+        "Civil_Engineering": "Ingénierie Civile",
+        "Mechanical_Engineering": "Ingénierie Mécanique",
+        "Submit": "Soumettre"
+    },
+    "deleteDraft": {
+        "Notifications": "Notifications",
+        "Logout": "Déconnexion",
+        "Delete_Draft": "Supprimer le brouillon :",
+        "Why_are_you_deleting_this_draft": "Pourquoi supprimez-vous ce brouillon ?",
+        "Definition_is_not_complete": "La définition n'est pas complète",
+        "Definition_already_exists": "La définition existe déjà",
+        "Other": "Autre"
+    },
+    "draft": {
+        "Definition_Draft": "Brouillon de définition",
+        "Logout": "Déconnexion",
+        "Acronym": "Acronyme :",
+        "Definition": "Définition :",
+        "Source": "Source :",
+        "Definition_Submission_Date": "Date de soumission de la définition :",
+        "Approve_Draft": "Approuver le brouillon",
+        "Delete_Draft": "Supprimer le brouillon"
+    },
+    "drafts": {
+        "Definitions_Draft": "Brouillons de définitions",
+        "Logout": "Déconnexion",
+        "Draft_List": "Liste des brouillons"
+    },
+    "index": {
+        "Home_Page_Login": "Page d'accueil - Connexion",
+        "Multilingual_Glossary": "Glossaire multilingue",
+        "Login": "Connexion",
+        "Please_enter_your_username_and_password_to_log_in.": "Veuillez entrer votre nom d'utilisateur et votre mot de passe pour vous connecter.",
+        "Username": "Nom d'utilisateur :",
+        "Password": "Mot de passe :",
+        "Show_Password": "Afficher le mot de passe"
+    },
+    "notification": {
+        "Notifications": "Notifications",
+        "Logout": "Déconnexion",
+        "You_have_got_this_notification": "Vous avez reçu cette notification :"
+    },
+    "notifications": {
+        "Definition": "Définition",
+        "Logout": "Déconnexion",
+        "Notifications_List": "Liste des notifications"
+    },
+    "searchpage": {
+        "Search_page": "Page de recherche",
+        "Logout": "Déconnexion",
+        "Users": "Utilisateurs",
+        "Notifications": "Notifications",
+        "Add_definition": "Ajouter une définition",
+        "Pending_definitions": "Définitions en attente",
+        "Search": "Recherche",
+        "Definition": "Définition :"
+    },
+    "user": {
+        "User": "Utilisateur",
+        "Logout": "Déconnexion",
+        "User_Details_for": "Détails de l'utilisateur pour :",
+        "Email": "Email :",
+        "Role": "Role :",
+        "Admin": "Administrateur",
+        "Approver": "Approuveur",
+        "Reviewer": "Réviseur",
+        "Author": "Auteur",
+        "Visitor": "Visiteur",
+        "Update": "Mettre à jour",
+        "Languages": "Langues :",
+        "Hire_Date": "Date d'embauche :",
+        "Born_Date": "Date de naissance :",
+        "User_Role": "Rôle de l'utilisateur :",
+        "Delete_User": "Supprimer l'utilisateur"
+    },
+    "users": {
+        "Users_List": "Liste des utilisateurs",
+        "Logout": "Déconnexion",
+        "Add_new_user": "Ajouter un nouvel utilisateur"
+    }
+}

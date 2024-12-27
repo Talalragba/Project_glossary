@@ -23,6 +23,9 @@ eng_definition_collection = dbft['engDefinitionCollection']
 user_credentials = dbft['userCredentials']
 #db.engDefinitionDraftCollection.deleteMany({}) to clear a collection in the db using MongoDB shell
 
+############# To read json files stored locally ############
+import json
+import os
 
 #################### This is the login view ####################
 #In this view we get the username and password from the login page
@@ -48,7 +51,13 @@ def login_view(request):
             request.session["logedUserId"] = user['UserID']
             request.session["username"] = user['UserName']
             user_data = user_collection.find_one({"UserID": user['UserID']})
+            # print(user_data)
             request.session["userRole"] = user_data['UserRole']
+            request.session["selectedLanguage"] = user_data['selectedLanguage']
+            request.session["languageFile"] = language_selection(request.session["selectedLanguage"])
+            print(request.session["languageFile"])
+            user_collection.update_many({}, {'$set': {'selectedLanguage': 'fr'}})
+
             ###############################################################
             #here i should add the request.session["chosenLanguage"]      #
             #which must be passed to this view by the index page          #
@@ -95,11 +104,11 @@ def search_view(request):
             message = "The acronym doesn't exist."
 
         user_role = request.session.get("userRole")
-        return render(request, 'appwmlg/searchpage.html', {'user_role': user_role, 'definition': definition, 'message': message})
+        return render(request, 'appwmlg/searchpage.html', {'user_role': user_role, 'definition': definition, 'message': message, 'languageFile': request.session["languageFile"]})
 
     else :
         user_role = request.session.get("userRole")
-        return render(request, 'appwmlg/searchpage.html', {'user_role': user_role})
+        return render(request, 'appwmlg/searchpage.html', {'user_role': user_role, 'languageFile': request.session["languageFile"]})
 
 #################### This is the define view ####################
 #1) to pevent non authenticated users to get into this view we first check the
@@ -149,7 +158,7 @@ def define_view(request):
         return redirect('search') 
     
     else :
-        return render(request, 'appwmlg/define.html')
+        return render(request, 'appwmlg/define.html', {'languageFile': request.session["languageFile"]})
 
 #################### This is the addUser view ####################
 #1) to pevent non authenticated users to get into this view we first check the
@@ -213,7 +222,7 @@ def addUser_view(request):
 
         return redirect('search')  # Redirect after submission
     else :
-        return render(request, 'appwmlg/addUser.html')
+        return render(request, 'appwmlg/addUser.html', {'languageFile': request.session["languageFile"]})
 
 #################### This is the users view ####################
 #1) to pevent non authenticated users to get into this view we first check the
@@ -232,7 +241,7 @@ def users_view(request):
     else : 
         users = list(user_collection.find()) 
         print(users)
-        return render(request, 'appwmlg/users.html', {'users': users})       
+        return render(request, 'appwmlg/users.html', {'users': users, 'languageFile': request.session["languageFile"]})       
 
 #################### This is the user view ####################
 #0) first thing here is that this view gets a variable passed to it from the
@@ -252,7 +261,7 @@ def user_view(request, UserID):
         return redirect("search")
     else :
         user = user_collection.find_one({"UserID": UserID})
-        return render(request, 'appwmlg/user.html', {'user': user})
+        return render(request, 'appwmlg/user.html', {'user': user, 'languageFile': request.session["languageFile"]})
     
 #################### This is the user update view ####################
 #0) first thing here is that this view gets a variable passed to it from the
@@ -312,14 +321,14 @@ def drafts_view(request):
             "DefinitionAuthorID": {"$nin": [request.session.get('logedUserId')]},
             "Reviewers": {"$nin": [request.session.get('logedUserId')]}
         }))
-        return render(request, 'appwmlg/drafts.html', {'drafts': drafts})        
+        return render(request, 'appwmlg/drafts.html', {'drafts': drafts, 'languageFile': request.session["languageFile"]})        
     else : 
         drafts = list(eng_definition_draft_collection.find({
             "Approvers": {"$nin": [request.session.get('logedUserId')]},
             "DefinitionAuthorID": {"$nin": [request.session.get('logedUserId')]},
             "Reviewers": {"$nin": [request.session.get('logedUserId')]}
         }))
-        return render(request, 'appwmlg/drafts.html', {'drafts': drafts})
+        return render(request, 'appwmlg/drafts.html', {'drafts': drafts, 'languageFile': request.session["languageFile"]})
 
 #################### This is the user update view ####################
 #0) first thing here is that this view gets a variable passed to it from the
@@ -339,7 +348,7 @@ def draft_view(request, DraftID):
         return redirect("search")
     else :
         draft = eng_definition_draft_collection.find_one({"DraftID": DraftID})
-        return render(request, 'appwmlg/draft.html', {'draft': draft})
+        return render(request, 'appwmlg/draft.html', {'draft': draft, 'languageFile': request.session["languageFile"]})
 
 '''######################################################################
 0) first thing here is that this view gets a variable passed to it from the
@@ -446,7 +455,7 @@ def delete_draft_view(request, DraftID):
 
         return redirect('search')
 
-    return render(request, 'appwmlg/deleteDraft.html', {'draft': draft})
+    return render(request, 'appwmlg/deleteDraft.html', {'draft': draft, 'languageFile': request.session["languageFile"]})
 
 #################### This is the notifications view ####################
 #1) to pevent non authenticated users to get into this view directly from the url
@@ -460,7 +469,7 @@ def notifications_view(request):
         return redirect('login')
     else : 
         user = user_collection.find_one({"UserID": request.session["logedUserId"]})
-        return render(request, 'appwmlg/notifications.html', {'user': user})   
+        return render(request, 'appwmlg/notifications.html', {'user': user, 'languageFile': request.session["languageFile"]})   
 
 #################### This is the notification view ####################
 #1) to pevent non authenticated users to get into this view directly from the url
@@ -475,5 +484,20 @@ def notification_view(request):
         return redirect('login')
     else :
         message = request.GET.get("message")
-        return render(request, 'appwmlg/notification.html', {'message': message})
+        return render(request, 'appwmlg/notification.html', {'message': message, 'languageFile': request.session["languageFile"]})
     
+#################### language selection function  ######################
+
+########################################################################
+def language_selection(selectedLanguage):
+    if selectedLanguage == "en" :
+        with open('/home/vboxuser/Project_glossary/webmlg/webmlg/translations/eng.json', 'r') as file :
+            translations = json.load(file)
+    elif selectedLanguage == "fr" :
+        with open('/home/vboxuser/Project_glossary/webmlg/webmlg/translations/fr.json', 'r') as file :
+            translations = json.load(file)
+    else :
+        with open('/home/vboxuser/Project_glossary/webmlg/webmlg/translations/de.json', 'r') as file :
+            translations = json.load(file)
+    return translations
+

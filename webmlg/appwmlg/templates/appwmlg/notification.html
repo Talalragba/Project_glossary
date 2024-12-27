@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notifications</title>
+    <title>{{languageFile.notification.Notifications}}</title>
     <style>
         /* custom styles will be added here */
     </style>
 </head>
 <body>
 
-<button onclick="location.href='{% url 'logout' %}'">Logout</button>
-<h1>You have got this notification : {{ message }}</h1>
+<button onclick="location.href='{% url 'logout' %}'">{{languageFile.notification.Logout}}</button>
+<h1>{{languageFile.notification.You_have_got_this_notification}} {{ message }}</h1>
 
 </body>
 </html>

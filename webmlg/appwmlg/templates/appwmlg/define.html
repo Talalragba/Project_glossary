@@ -4,42 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter une Nouvelle Définition</title>
+    <title>{{languageFile.define.Add_new_definition}}</title>
     <style>
         /* custom styles will be added here */
     </style>
 </head>
 <body>
 
-<button onclick="location.href='{% url 'logout' %}'">Logout</button>
+<button onclick="location.href='{% url 'logout' %}'">{{languageFile.define.Logout}}</button>
 
 <div class="form-container">
-    <h2>Add new definition</h2>
+    <h2>{{languageFile.define.Add_new_definition}}</h2>
     <form action="{% url 'define' %}" method="post">
         {% csrf_token %}
         
-        <label for="acronym">Acronym :</label>
+        <label for="acronym">{{languageFile.define.Acronym}}</label>
         <input type="text" id="acronym" name="acronym" required>
         <br>
 
-        <label for="definition">Definition :</label>
+        <label for="definition">{{languageFile.define.Definition}}</label>
         <textarea id="definition" name="definition" rows="4" required></textarea>
         <br>
 
-        <label for="source">Source :</label>
+        <label for="source">{{languageFile.define.Source}}</label>
         <input type="text" id="source" name="source" required>
         <br>
 
-        <label for="industry">Industry :</label>
+        <label for="industry">{{languageFile.define.Industry}}</label>
         <select id="industry" name="industry" multiple required>
-            <option value="pharma">Pharma</option>
-            <option value="electrical engineering">Electrical Engineering</option>
-            <option value="civil engineering">Civil Engineering</option>
-            <option value="mechanical engineering">Mechanical Engineering</option>
+            <option value="pharma">{{languageFile.define.Pharma}}</option>
+            <option value="electrical engineering">{{languageFile.define.Electrical_Engineering}}</option>
+            <option value="civil engineering">{{languageFile.define.Civil_Engineering}}</option>
+            <option value="mechanical engineering">{{languageFile.define.Mechanical_Engineering}}</option>
         </select>
         <br>
         
-        <button type="submit">Submit</button>
+        <button type="submit">{{languageFile.define.Submit}}</button>
     </form>
 </div>
 

@@ -56,7 +56,7 @@ def login_view(request):
             request.session["selectedLanguage"] = user_data['selectedLanguage']
             request.session["languageFile"] = language_selection(request.session["selectedLanguage"])
             print(request.session["languageFile"])
-            user_collection.update_many({}, {'$set': {'selectedLanguage': 'fr'}})
+            #user_collection.update_many({}, {'$set': {'selectedLanguage': 'fr'}})
 
             ###############################################################
             #here i should add the request.session["chosenLanguage"]      #
@@ -488,7 +488,6 @@ def notification_view(request):
     
 #################### language selection function  ######################
 
-########################################################################
 def language_selection(selectedLanguage):
     if selectedLanguage == "en" :
         with open('/home/vboxuser/Project_glossary/webmlg/webmlg/translations/eng.json', 'r') as file :
@@ -501,3 +500,20 @@ def language_selection(selectedLanguage):
             translations = json.load(file)
     return translations
 
+####################   ######################
+
+def changeLanguage_view(request):
+
+
+    pageName = request.POST.get("pageName")
+    language = request.POST.get("language")
+
+
+    user_collection.update_one({"UserID": request.session["logedUserId"]}, {'$set': {'selectedLanguage': language}})
+    user_data = user_collection.find_one({"UserID": request.session["logedUserId"]})
+
+    request.session["selectedLanguage"] = user_data['selectedLanguage']
+
+    request.session["languageFile"] = language_selection(request.session["selectedLanguage"])
+  
+    return redirect(pageName) 

@@ -1,4 +1,5 @@
 {
+    "selected_language" : "fr",
     "addUser": {
         "Logout": "Déconnexion",
         "Add_user": "Ajouter un utilisateur",

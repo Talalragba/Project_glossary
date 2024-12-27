@@ -17,6 +17,8 @@ from appwmlg.views import approve_draft_view
 from appwmlg.views import delete_draft_view
 from appwmlg.views import notifications_view
 from appwmlg.views import notification_view
+##########
+from appwmlg.views import changeLanguage_view
 
 
 urlpatterns = [
@@ -40,5 +42,8 @@ urlpatterns = [
     ######################################
     path('notifications/', notifications_view, name='notifications'),
     path('notification/', notification_view, name='notification'),
+    ######################################
+    path('changeLanguage/', changeLanguage_view, name='changeLanguage'),
+
 
 ]

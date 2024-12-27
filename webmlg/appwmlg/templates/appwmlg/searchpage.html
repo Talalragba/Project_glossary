@@ -58,5 +58,18 @@
     </div>
 </div>
 
+
+
+<form action="{% url 'changeLanguage' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="pageName" value="search">
+    <select name="language" id="language" onchange="this.form.submit()">
+        <option value="en" {% if languageFile.selected_language == 'en' %}selected{% endif %}>Eng</option>
+        <option value="fr" {% if languageFile.selected_language == 'fr' %}selected{% endif %}>Fr</option>
+        <option value="de" {% if languageFile.selected_language == 'de' %}selected{% endif %}>De</option>
+    </select>
+</form>
+
+
 </body>
 </html>

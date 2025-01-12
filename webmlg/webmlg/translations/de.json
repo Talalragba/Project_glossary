@@ -1,6 +1,7 @@
 {
     "selected_language" : "de",
     "addUser": {
+        "Home":"Startseite",
         "Logout": "Abmelden",
         "Add_user": "Benutzer hinzufügen",
         "Add_new_user": "Neuen Benutzer hinzufügen",
@@ -21,6 +22,7 @@
         "Add": "Hinzufügen :"
     },
     "define": {
+        "Home":"Startseite",
         "Add_new_definition": "Neue Definition hinzufügen",
         "Logout": "Abmelden",
         "Acronym": "Akronym :",
@@ -34,6 +36,7 @@
         "Submit": "Einreichen"
     },
     "deleteDraft": {
+        "Home":"Startseite",
         "Notifications": "Benachrichtigungen",
         "Logout": "Abmelden",
         "Delete_Draft": "Entwurf löschen :",
@@ -43,6 +46,7 @@
         "Other": "Andere"
     },
     "draft": {
+        "Home":"Startseite",
         "Definition_Draft": "Entwurf der Definition",
         "Logout": "Abmelden",
         "Acronym": "Akronym :",
@@ -53,11 +57,13 @@
         "Delete_Draft": "Entwurf löschen"
     },
     "drafts": {
+        "Home":"Startseite",
         "Definitions_Draft": "Entwürfe der Definitionen",
         "Logout": "Abmelden",
         "Draft_List": "Entwurfsliste"
     },
     "index": {
+        "Home":"Startseite",
         "Home_Page_Login": "Startseite - Anmeldung",
         "Multilingual_Glossary": "Mehrsprachiges Glossar",
         "Login": "Anmelden",
@@ -67,16 +73,19 @@
         "Show_Password": "Passwort anzeigen"
     },
     "notification": {
+        "Home":"Startseite",
         "Notifications": "Benachrichtigungen",
         "Logout": "Abmelden",
         "You_have_got_this_notification": "Sie haben diese Benachrichtigung erhalten :"
     },
     "notifications": {
+        "Home":"Startseite",
         "Definition": "Definition",
         "Logout": "Abmelden",
         "Notifications_List": "Benachrichtigungsliste"
     },
     "searchpage": {
+        "Home":"Startseite",
         "Search_page": "Suchseite",
         "Logout": "Abmelden",
         "Users": "Benutzer",
@@ -87,6 +96,7 @@
         "Definition": "Definition :"
     },
     "user": {
+        "Home":"Startseite",
         "User": "Benutzer",
         "Logout": "Abmelden",
         "User_Details_for": "Benutzerdetails für :",
@@ -105,6 +115,7 @@
         "Delete_User": "Benutzer löschen"
     },
     "users": {
+        "Home":"Startseite",
         "Users_List": "Benutzerliste",
         "Logout": "Abmelden",
         "Add_new_user": "Neuen Benutzer hinzufügen"

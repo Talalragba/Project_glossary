@@ -1,6 +1,7 @@
 {
     "selected_language" : "eng",
     "addUser" :{
+        "Home":"Home",
         "Logout": "Logout",
         "Add_user": "Add user",
         "Add_new_user": "Add new user",
@@ -21,6 +22,7 @@
         "Add": "Add :"
     }, 
     "define" :{
+        "Home":"Home",
         "Add_new_definition": "Add new definition",
         "Logout": "Logout",
         "Acronym": "Acronym :",
@@ -34,6 +36,7 @@
         "Submit": "Submit"       
     },
     "deleteDraft" :{
+        "Home":"Home",
         "Notifications": "Notifications",
         "Logout": "Logout",
         "Delete_Draft": "Delete Draft :",
@@ -43,6 +46,7 @@
         "Other": "Other"
     },
     "draft" :{
+        "Home":"Home",
         "Definition_Draft": "Definition Draft",
         "Logout": "Logout",
         "Acronym": "Acronym :",
@@ -54,12 +58,14 @@
 
     },
     "drafts" :{
+        "Home":"Home",
         "Definitions_Draft": "Definitions Draft",
         "Logout": "Logout",
         "Draft_List": "Draft List"   
 
     },
     "index" :{
+        "Home":"Home",
         "Home_Page_Login": "Home Page - Login",
         "Multilingual_Glossary": "Multilingual Glossary",
         "Login": "Login",
@@ -70,17 +76,20 @@
 
     },
     "notification" :{
+        "Home":"Home",
         "Notifications": "Notifications",
         "Logout": "Logout",
         "You_have_got_this_notification": "You have got this notification :"
 
     },
     "notifications" :{
+        "Home":"Home",
         "Definition": "Definition",
         "Logout": "Logout",
         "Notifications_List": "Notifications List"
     },
     "searchpage" :{
+        "Home":"Home",
         "Search_page": "Search page",
         "Logout": "Logout",
         "Users": "Users",
@@ -92,6 +101,7 @@
 
     },
     "user" :{
+        "Home":"Home",
         "User": "User",
         "Logout": "Logout",
         "User_Details_for": "User Details for :",
@@ -111,6 +121,7 @@
 
     },
     "users" :{
+        "Home":"Home",
         "Users_List": "Users List",
         "Logout": "Logout",
         "Add_new_user": "Add new user"

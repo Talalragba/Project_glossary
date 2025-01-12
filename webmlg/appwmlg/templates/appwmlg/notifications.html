@@ -5,32 +5,152 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{languageFile.notifications.Definition}}</title>
     <style>
-        /* custom styles will be added here */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .page-content-root{
+            display: flex;
+            justify-content: space-around;
+            padding: 50px 100px;            
+
+        }
+        .page-content {
+
+            text-align:left; /* Center text within the container */
+            background-color: #ffffff; /* White background for the container */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for a 3D effect */
+            width: 100%;
+            max-width: 600px; /* Set a max width for the container */
+            box-sizing: border-box;
+        }
+
+        .page-content h1 {
+            font-size: 24px; /* Larger font for the heading */
+            margin-bottom: 20px; /* Space below the heading */
+            color: #333; /* Darker color for contrast */
+        }
+
+        .page-content ul {
+            list-style-type:decimal-leading-zero; /* Remove default bullet points */
+            padding: 0;
+            margin: 30px;
+        }
+
+        .page-content ul li {
+            margin: 10px 0; /* Space between list items */
+        }
+
+        .page-content ul li a {
+            text-decoration: none; /* Remove underline */
+            color: #007bff; /* Blue text color */
+            font-weight: bold; /* Make the text bold */
+        }
+
+        .page-content ul li a:hover {
+            color: #0056b3; /* Darker blue on hover */
+            text-decoration: underline; /* Underline effect on hover */
+        }
+
+        .top-buttons {
+            display: flex;
+            justify-content: space-around;
+        }
+        .top-buttons-group-1 {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .top-buttons-group-1:hover {
+            background-color: #357ae8;
+        }
+        /* Buttom buttons layout*/
+        .language-selection {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically within the container */
+            position:absolute;
+            bottom: 20px; /* Distance from the bottom of the page */
+            left: 50%;
+            transform: translateX(-50%); /* Center horizontally based on its width */
+        }
+        /* Language selection section*/
+        .language-button {
+            background: none;
+            border: none;
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+            margin-right: 10px;
+        }
+
     </style>
 </head>
 <body>
 
-<button onclick="location.href='{% url 'logout' %}'">{{languageFile.notifications.Logout}}</button>
+<div class="top-buttons">
+    <div>
+        <button class="top-buttons-group-1" onclick="location.href='{% url 'search' %}'">{{languageFile.notifications.Home}}</button>
+    </div>
+    <div></div>
+    <div>
+        <button class="top-buttons-group-1" onclick="location.href='{% url 'logout' %}'">{{languageFile.notifications.Logout}}</button>
+    </div>
+</div>
 
-<h1>{{languageFile.notifications.Notifications_List}}</h1>
+<div class="page-content-root">
+    <div class="page-content">
+        <h1>{{languageFile.notifications.Notifications_List}}</h1>
 
-<ul>
-    {% for notification_list in user.Notifications %}
-        {% for notification in notification_list %}
-            {% if not notification.read %}
-            <li>
-                <a href="{% url 'notification' %}?message={{ notification.message }}">
-                {{ notification.title }}
-                </a>
-                <p>
-                {{ notification.timestamp}}
-                </p>
-            </li>    
-            {% endif %}
-        {% endfor %}
-    {% endfor %}
-</ul>
- 
+        <ul>
+            {% for notification_list in user.Notifications %}
+                {% for notification in notification_list %}
+                    {% if not notification.read %}
+                    <li>
+                        <a href="{% url 'notification' %}?message={{ notification.message }}">
+                        {{ notification.title }}
+                        </a>
+                        <p>
+                        {{ notification.timestamp}}
+                        </p>
+                    </li>    
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="language-selection">
+    <form action="{% url 'changeLanguage' %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        <input type="hidden" name="pageName" value="notifications">
+        
+        <!-- Language: English -->
+        <button type="submit" name="language" value="en" class="language-button">
+            English
+        </button>
+        
+        <!-- Language: French -->
+        <button type="submit" name="language" value="fr" class="language-button">
+            Français
+        </button>
+        
+        <!-- Language: German -->
+        <button type="submit" name="language" value="de" class="language-button">
+            Deutsch
+        </button>
+    </form>
+</div>
 
 </body>
 </html>

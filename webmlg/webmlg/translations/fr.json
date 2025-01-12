@@ -1,6 +1,7 @@
 {
     "selected_language" : "fr",
     "addUser": {
+        "Home":"Accueil",
         "Logout": "Déconnexion",
         "Add_user": "Ajouter un utilisateur",
         "Add_new_user": "Ajouter un nouvel utilisateur",
@@ -21,6 +22,7 @@
         "Add": "Ajouter :"
     },
     "define": {
+        "Home":"Accueil",
         "Add_new_definition": "Ajouter une nouvelle définition",
         "Logout": "Déconnexion",
         "Acronym": "Acronyme :",
@@ -34,6 +36,7 @@
         "Submit": "Soumettre"
     },
     "deleteDraft": {
+        "Home":"Accueil",
         "Notifications": "Notifications",
         "Logout": "Déconnexion",
         "Delete_Draft": "Supprimer le brouillon :",
@@ -43,6 +46,7 @@
         "Other": "Autre"
     },
     "draft": {
+        "Home":"Accueil",
         "Definition_Draft": "Brouillon de définition",
         "Logout": "Déconnexion",
         "Acronym": "Acronyme :",
@@ -53,11 +57,13 @@
         "Delete_Draft": "Supprimer le brouillon"
     },
     "drafts": {
+        "Home":"Accueil",
         "Definitions_Draft": "Brouillons de définitions",
         "Logout": "Déconnexion",
         "Draft_List": "Liste des brouillons"
     },
     "index": {
+        "Home":"Accueil",
         "Home_Page_Login": "Page d'accueil - Connexion",
         "Multilingual_Glossary": "Glossaire multilingue",
         "Login": "Connexion",
@@ -67,16 +73,19 @@
         "Show_Password": "Afficher le mot de passe"
     },
     "notification": {
+        "Home":"Accueil",
         "Notifications": "Notifications",
         "Logout": "Déconnexion",
         "You_have_got_this_notification": "Vous avez reçu cette notification :"
     },
     "notifications": {
+        "Home":"Accueil",
         "Definition": "Définition",
         "Logout": "Déconnexion",
         "Notifications_List": "Liste des notifications"
     },
     "searchpage": {
+        "Home":"Accueil",
         "Search_page": "Page de recherche",
         "Logout": "Déconnexion",
         "Users": "Utilisateurs",
@@ -87,6 +96,7 @@
         "Definition": "Définition :"
     },
     "user": {
+        "Home":"Accueil",
         "User": "Utilisateur",
         "Logout": "Déconnexion",
         "User_Details_for": "Détails de l'utilisateur pour :",
@@ -105,6 +115,7 @@
         "Delete_User": "Supprimer l'utilisateur"
     },
     "users": {
+        "Home":"Accueil",
         "Users_List": "Liste des utilisateurs",
         "Logout": "Déconnexion",
         "Add_new_user": "Ajouter un nouvel utilisateur"

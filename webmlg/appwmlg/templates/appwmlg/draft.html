@@ -5,26 +5,148 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{languageFile.draft.Definition_Draft}}</title>
     <style>
-        /* custom styles will be added here */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .page-content-root{
+            display: flex;
+            justify-content: space-around;
+            padding: 50px 100px;            
+
+        }
+        .page-content {
+            text-align:left; /* Center text within the container */
+            background-color: #ffffff; /* White background for the container */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for a 3D effect */
+            width: 100%;
+            max-width: 600px; /* Set a max width for the container */
+            box-sizing: border-box;
+        }
+        .page-content-footer {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .page-content-footer button {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .page-content-footer button:hover {
+            background-color: #0056b3;
+        }
+
+        .top-buttons {
+            display: flex;
+            justify-content: space-around;
+        }
+        .top-buttons-group-1 {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .top-buttons-group-1:hover {
+            background-color: #357ae8;
+        }
+        /* Buttom buttons layout*/
+        .language-selection {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically within the container */
+            position:absolute;
+            bottom: 20px; /* Distance from the bottom of the page */
+            left: 50%;
+            transform: translateX(-50%); /* Center horizontally based on its width */
+        }
+        /* Language selection section*/
+        .language-button {
+            background: none;
+            border: none;
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
 
-<button onclick="location.href='{% url 'logout' %}'">{{languageFile.draft.Logout}}</button>
+<div class="top-buttons">
+    <div>
+        <button class="top-buttons-group-1" onclick="location.href='{% url 'search' %}'">{{languageFile.draft.Home}}</button>
+    </div>
+    <div></div>
+    <div>
+        <button class="top-buttons-group-1" onclick="location.href='{% url 'logout' %}'">{{languageFile.draft.Logout}}</button>
+    </div>
+</div>    
 
-<p><strong>{{languageFile.draft.Acronym}}</strong> {{ draft.Acronym }}</p>
-<p><strong>{{languageFile.draft.Definition}}</strong> {{ draft.Definition }}</p>
-<p><strong>{{languageFile.draft.Source}}</strong><a href="{{ draft.Source }}">{{ draft.Source }}</a></p>
-<p><strong>{{languageFile.draft.Definition_Submission_Date}}</strong> {{ draft.DefinitionSubmissionDate }}</p>
+<div class="page-content-root">
+    <div class="page-content">
+        <div>
+            <p><strong>{{languageFile.draft.Acronym}} </strong>{{ draft.Acronym }}</p>
+            <p><strong>{{languageFile.draft.Definition}} </strong><br>{{ draft.Definition }}</p>
+            <p><strong>{{languageFile.draft.Source}} </strong><a href="{{ draft.Source }}">{{ draft.Source }}</a></p>
+            <p><strong>{{languageFile.draft.Definition_Submission_Date}} </strong> {{ draft.DefinitionSubmissionDate }}</p>    
+        </div>
+        
+        <div class="page-content-footer">
+            <div>
+                <form action="{% url 'approveDraft' draft.DraftID %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">{{languageFile.draft.Approve_Draft}}</button>
+                </form>
+            </div>
+            <div>
+                <form action="{% url 'deleteDraft' draft.DraftID %}">
+                    {% csrf_token %}
+                    <button type="submit">{{languageFile.draft.Delete_Draft}}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
-<form action="{% url 'approveDraft' draft.DraftID %}" method="post">
-    {% csrf_token %}
-    <button type="submit">{{languageFile.draft.Approve_Draft}}</button>
-</form>
 
-<a href="{% url 'deleteDraft' draft.DraftID %}">{{languageFile.draft.Delete_Draft}}</a>
-
-
+<div class="language-selection">
+    <form action="{% url 'changeLanguage' %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        <input type="hidden" name="pageName" value="drafts">
+        
+        <!-- Language: English -->
+        <button type="submit" name="language" value="en" class="language-button">
+            English
+        </button>
+        
+        <!-- Language: French -->
+        <button type="submit" name="language" value="fr" class="language-button">
+            Français
+        </button>
+        
+        <!-- Language: German -->
+        <button type="submit" name="language" value="de" class="language-button">
+            Deutsch
+        </button>
+    </form>
+</div>
 </body>
 </html>

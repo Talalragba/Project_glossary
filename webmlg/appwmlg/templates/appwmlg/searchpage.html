@@ -5,44 +5,171 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{languageFile.searchpage.Search_page}}</title>
     <style>
-        /* custom styles will be added here */
-        .result-message {
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .button {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #357ae8;
+        }
+
+        .search-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #searchInput {
+            width: 50%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            box-shadow: none;
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        #searchInput:focus {
+            outline: none;
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+            border-color: rgba(223, 225, 229, 0);
+        }
+
+        .button[type="submit"] {
+            padding: 10px 24px;
+            font-size: 16px;
+            margin-left: 10px;
+            border-radius: 24px;
+            background-color: #4285f4;
+            color: white;
+        }
+
+        .results {
+            text-align: left;
             margin-top: 20px;
-            font-size: 1.2em;
+            padding: 0 20px;
+        }
+
+        .result-message {
+            font-size: 18px;
             color: #333;
         }
+        /* Language selection section*/
+        .language-button {
+            background: none;
+            border: none;
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+            margin-right: 10px;
+        }
+        .language-button:last-child {
+            margin-right: 0; /* Remove margin for the last button */
+        }
+        /* Top buttons layout*/
+        .top-buttons {
+            display: flex;
+            justify-content: space-around;
+        }
+        /* Buttom buttons layout*/
+        .language-selection {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically within the container */
+            position: absolute;
+            bottom: 20px; /* Distance from the bottom of the page */
+            left: 50%;
+            transform: translateX(-50%); /* Center horizontally based on its width */
+        }
+
+
     </style>
-</head>
+    </head>
 <body>
 
+<div class="top-buttons">
 {% if user_role == 'admin' %}
-    <button onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
-    <button onclick="location.href='{% url 'users' %}'">{{languageFile.searchpage.Users}}</button>
-    <button onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
+    <div class="top-buttons-group-1">
+        <button class="button" onclick="location.href='{% url 'users' %}'">{{languageFile.searchpage.Users}}</button>
+        <button class="button" onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>    
+    </div>
+    <div class="top-buttons-group-2">
+        <button class="button" onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
+    </div>
 {% elif user_role == 'reviewer' %}
-    <button onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
-    <button onclick="location.href='{% url 'define' %}'">{{languageFile.searchpage.Add_definition}}</button>
-    <button onclick="location.href='{% url 'drafts' %}'">{{languageFile.searchpage.Pending_definitions}}</button>
-    <button onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
+    <div class="top-buttons-group-1">
+        <button class="button" onclick="location.href='{% url 'define' %}'">{{languageFile.searchpage.Add_definition}}</button>
+        <button class="button" onclick="location.href='{% url 'drafts' %}'">{{languageFile.searchpage.Pending_definitions}}</button>
+        <button class="button" onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>  
+    </div>
+    <div class="top-buttons-group-2">
+        <button class="button" onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
+    </div>
 {% elif user_role == 'approver' %}
-    <button onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
-    <button onclick="location.href='{% url 'define' %}'">{{languageFile.searchpage.Add_definition}}</button>
-    <button onclick="location.href='{% url 'drafts' %}'">{{languageFile.searchpage.Pending_definitions}}</button>
-    <button onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
+    <div class="top-buttons-group-1">
+        <button class="button" onclick="location.href='{% url 'define' %}'">{{languageFile.searchpage.Add_definition}}</button>
+        <button class="button" onclick="location.href='{% url 'drafts' %}'">{{languageFile.searchpage.Pending_definitions}}</button>
+        <button class="button" onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>    
+    </div>
+    <div class="top-buttons-group-2">
+        <button class="button" onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
+    </div>
 {% elif user_role == 'author' %}
-    <button onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
-    <button onclick="location.href='{% url 'define' %}'">{{languageFile.searchpage.Add_definition}}</button>
-    <button onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
+    <div class="top-buttons-group-1">
+        <button class="button" onclick="location.href='{% url 'define' %}'">{{languageFile.searchpage.Add_definition}}</button>
+        <button class="button" onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
+    </div>
+    <div class="top-buttons-group-2">
+        <button class="button" onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
+    </div>
 {% elif user_role == 'visitor' %}
-    <button onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
-    <button onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
+    <div class="top-buttons-group-1">
+        <button class="button" onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
+    </div>
+    <div class="top-buttons-group-2">
+        <button class="button" onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
+    </div>
 {% endif %}
-
+<!-- {% if user_role == 'admin' %}
+    <button class="button" onclick="location.href='{% url 'users' %}'">{{languageFile.searchpage.Users}}</button>
+    <button class="button" onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
+    <button class="button" onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
+{% elif user_role == 'reviewer' %}
+    <button class="button" onclick="location.href='{% url 'define' %}'">{{languageFile.searchpage.Add_definition}}</button>
+    <button class="button" onclick="location.href='{% url 'drafts' %}'">{{languageFile.searchpage.Pending_definitions}}</button>
+    <button class="button" onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
+    <button class="button" onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
+{% elif user_role == 'approver' %}
+    <button class="button" onclick="location.href='{% url 'define' %}'">{{languageFile.searchpage.Add_definition}}</button>
+    <button class="button" onclick="location.href='{% url 'drafts' %}'">{{languageFile.searchpage.Pending_definitions}}</button>
+    <button class="button" onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
+    <button class="button" onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
+{% elif user_role == 'author' %}
+    <button class="button" onclick="location.href='{% url 'define' %}'">{{languageFile.searchpage.Add_definition}}</button>
+    <button class="button" onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
+    <button class="button" onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
+{% elif user_role == 'visitor' %}
+    <button class="button" onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
+    <button class="button" onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>
+{% endif %} -->
+</div>
 
 <div class="search-container">
     <form method="GET" action="{% url 'search' %}">
         <input type="text" id="searchInput" name="acronym" placeholder="Search..." required>
-        <button type="submit">{{languageFile.searchpage.Search}}</button>
+        <button class="button" type="submit">{{languageFile.searchpage.Search}}</button>
     </form>
     
     <div class="results" id="resultsContainer">
@@ -60,7 +187,7 @@
 
 
 
-<form action="{% url 'changeLanguage' %}" method="post">
+<!-- <form action="{% url 'changeLanguage' %}" method="post">
     {% csrf_token %}
     <input type="hidden" name="pageName" value="search">
     <select name="language" id="language" onchange="this.form.submit()">
@@ -68,8 +195,29 @@
         <option value="fr" {% if languageFile.selected_language == 'fr' %}selected{% endif %}>Fr</option>
         <option value="de" {% if languageFile.selected_language == 'de' %}selected{% endif %}>De</option>
     </select>
-</form>
+</form> -->
 
+<div class="language-selection">
+    <form action="{% url 'changeLanguage' %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        <input type="hidden" name="pageName" value="search">
+        
+        <!-- Language: English -->
+        <button type="submit" name="language" value="en" class="language-button">
+            English
+        </button>
+        
+        <!-- Language: French -->
+        <button type="submit" name="language" value="fr" class="language-button">
+            Français
+        </button>
+        
+        <!-- Language: German -->
+        <button type="submit" name="language" value="de" class="language-button">
+            Deutsch
+        </button>
+    </form>
+</div>
 
 </body>
 </html>

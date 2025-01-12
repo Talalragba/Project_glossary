@@ -5,24 +5,148 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{languageFile.deleteDraft.Notifications}}</title>
     <style>
-        /* custom styles will be added here */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .form-container-root{
+            display: flex;
+            justify-content: space-around;
+            padding: 50px 100px;            
+
+        }
+        .form-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-container input,
+        .form-container select,
+        .form-container button {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-container button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .top-buttons {
+            display: flex;
+            justify-content: space-around;
+        }
+        .top-buttons-group-1 {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .top-buttons-group-1:hover {
+            background-color: #357ae8;
+        }
+        /* Buttom buttons layout*/
+        .language-selection {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically within the container */
+            position:absolute;
+            bottom: 20px; /* Distance from the bottom of the page */
+            left: 50%;
+            transform: translateX(-50%); /* Center horizontally based on its width */
+        }
+        /* Language selection section*/
+        .language-button {
+            background: none;
+            border: none;
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
 
-<button onclick="location.href='{% url 'logout' %}'">{{languageFile.deleteDraft.Logout}}</button>
+<div class="top-buttons">
+    <div>
+        <button class="top-buttons-group-1" onclick="location.href='{% url 'search' %}'">{{languageFile.deleteDraft.Home}}</button>
+    </div>
+    <div></div>
+    <div>
+        <button class="top-buttons-group-1" onclick="location.href='{% url 'logout' %}'">{{languageFile.deleteDraft.Logout}}</button>
+    </div>
+</div>  
 
-<h1>{{languageFile.deleteDraft.Delete_Draft}} {{ draft.Acronym }}</h1>
-<form method="post">
-    {% csrf_token %}
-    <label for="reason">{{languageFile.deleteDraft.Why_are_you_deleting_this_draft}}</label><br>
-    <select name="reason" id="reason" required>
-        <option value="definition is not complete">{{languageFile.deleteDraft.Definition_is_not_complete}}</option>
-        <option value="definition already exists">{{languageFile.deleteDraft.Definition_already_exists}}</option>
-        <option value="other">{{languageFile.deleteDraft.Other}}</option>
-    </select><br><br>
-    <button type="submit">{{languageFile.deleteDraft.Delete_Draft}}</button>
-</form>
+<div class="form-container-root">
+    <div class="form-container">
+        <h1>{{languageFile.deleteDraft.Delete_Draft}} {{ draft.Acronym }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            <label for="reason">{{languageFile.deleteDraft.Why_are_you_deleting_this_draft}}</label><br>
+            <select name="reason" id="reason" required>
+                <option value="definition is not complete">{{languageFile.deleteDraft.Definition_is_not_complete}}</option>
+                <option value="definition already exists">{{languageFile.deleteDraft.Definition_already_exists}}</option>
+                <option value="other">{{languageFile.deleteDraft.Other}}</option>
+            </select><br><br>
+            <button type="submit">{{languageFile.deleteDraft.Delete_Draft}}</button>
+        </form>
+    </div>
+</div>
+
+<div class="language-selection">
+    <form action="{% url 'changeLanguage' %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        <input type="hidden" name="pageName" value="drafts">
+        
+        <!-- Language: English -->
+        <button type="submit" name="language" value="en" class="language-button">
+            English
+        </button>
+        
+        <!-- Language: French -->
+        <button type="submit" name="language" value="fr" class="language-button">
+            Français
+        </button>
+        
+        <!-- Language: German -->
+        <button type="submit" name="language" value="de" class="language-button">
+            Deutsch
+        </button>
+    </form>
+</div>
 
 </body>
 </html>

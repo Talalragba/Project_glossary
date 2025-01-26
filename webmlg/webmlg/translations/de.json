@@ -33,6 +33,7 @@
         "Electrical_Engineering": "Elektrotechnik",
         "Civil_Engineering": "Bauingenieurwesen",
         "Mechanical_Engineering": "Maschinenbau",
+        "Language": "Sprache",
         "Submit": "Einreichen"
     },
     "deleteDraft": {
@@ -53,6 +54,9 @@
         "Definition": "Definition :",
         "Source": "Quelle :",
         "Definition_Submission_Date": "Datum der Einreichung der Definition :",
+        "Autor_Name":"Name des Autors :",
+        "Definition_Language":"Definitionssprache :",
+        "Industry":"Branche :",
         "Approve_Draft": "Entwurf genehmigen",
         "Delete_Draft": "Entwurf löschen"
     },
@@ -86,6 +90,7 @@
     },
     "searchpage": {
         "Home":"Startseite",
+        "Glossary":"Glossar",
         "Search_page": "Suchseite",
         "Logout": "Abmelden",
         "Users": "Benutzer",

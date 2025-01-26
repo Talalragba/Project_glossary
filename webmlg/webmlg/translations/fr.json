@@ -33,6 +33,7 @@
         "Electrical_Engineering": "Ingénierie Électrique",
         "Civil_Engineering": "Ingénierie Civile",
         "Mechanical_Engineering": "Ingénierie Mécanique",
+        "Language": "Langue",
         "Submit": "Soumettre"
     },
     "deleteDraft": {
@@ -53,6 +54,9 @@
         "Definition": "Définition :",
         "Source": "Source :",
         "Definition_Submission_Date": "Date de soumission de la définition :",
+        "Autor_Name":"Nom d'auteur :",
+        "Definition_Language":"Langue de définition :",
+        "Industry":"Industrie :",
         "Approve_Draft": "Approuver le brouillon",
         "Delete_Draft": "Supprimer le brouillon"
     },
@@ -86,6 +90,7 @@
     },
     "searchpage": {
         "Home":"Accueil",
+        "Glossary":"Glossaire",
         "Search_page": "Page de recherche",
         "Logout": "Déconnexion",
         "Users": "Utilisateurs",

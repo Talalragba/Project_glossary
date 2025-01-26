@@ -33,6 +33,7 @@
         "Electrical_Engineering": "Electrical Engineering",
         "Civil_Engineering": "Civil Engineering",
         "Mechanical_Engineering": "Mechanical Engineering",
+        "Language": "Language",
         "Submit": "Submit"       
     },
     "deleteDraft" :{
@@ -53,6 +54,9 @@
         "Definition": "Definition :",
         "Source": "Source :",
         "Definition_Submission_Date": "Definition Submission Date :",
+        "Autor_Name":"Autor Name :",
+        "Definition_Language":"Definition Language :",
+        "Industry":"Industry :",
         "Approve_Draft": "Approve Draft",
         "Delete_Draft": "Delete Draft"
 
@@ -90,6 +94,7 @@
     },
     "searchpage" :{
         "Home":"Home",
+        "Glossary":"Glossary",
         "Search_page": "Search page",
         "Logout": "Logout",
         "Users": "Users",

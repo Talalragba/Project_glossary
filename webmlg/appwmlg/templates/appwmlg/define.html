@@ -49,9 +49,11 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
-
-
-
+        .checkbox-group{
+            display: flex;
+            justify-content: space-around;
+            padding: 20px 50px;
+        }
         .form-container button {
             background-color: #007bff;
             color: #ffffff;
@@ -136,12 +138,28 @@
 
             <div>
                 <label for="industry">{{languageFile.define.Industry}}</label>
-                <select id="industry" name="industry" multiple required>
+                <select id="industry" name="industry" required>
                     <option value="pharma">{{languageFile.define.Pharma}}</option>
                     <option value="electrical engineering">{{languageFile.define.Electrical_Engineering}}</option>
                     <option value="civil engineering">{{languageFile.define.Civil_Engineering}}</option>
                     <option value="mechanical engineering">{{languageFile.define.Mechanical_Engineering}}</option>
                 </select>
+            </div>
+
+
+            <div class="checkbox-group">
+                <div>
+                    <label for="lang_eng">{{languageFile.addUser.English}}</label>
+                    <input type="radio" id="lang_eng" name="language" value="Eng" checked>
+                </div>
+                <div>
+                    <label for="lang_fr">{{languageFile.addUser.French}}</label>
+                    <input type="radio" id="lang_fr" name="language" value="Fr">
+                </div>
+                <div>
+                    <label for="lang_de">{{languageFile.addUser.German}}</label>
+                    <input type="radio" id="lang_de" name="language" value="De">
+                </div>
             </div>
 
             <div>

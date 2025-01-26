@@ -10,6 +10,22 @@
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
         }
+        .search-container-root {
+            display: flex;
+            justify-content: space-around;
+            padding: 50px 100px;
+        }
+        .search-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            box-sizing: border-box;        
+            text-align: center;
+            margin-top: 50px;
+        }
 
         .button {
             background-color: #4285f4;
@@ -23,11 +39,6 @@
 
         .button:hover {
             background-color: #357ae8;
-        }
-
-        .search-container {
-            text-align: center;
-            margin-top: 50px;
         }
 
         #searchInput {
@@ -45,6 +56,15 @@
             box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
             border-color: rgba(223, 225, 229, 0);
         }
+        .title {
+            font-size: 48px; 
+            font-weight: bold; 
+            font-family: 'Product Sans', sans-serif; 
+            color: #4285F4; 
+            text-align: center; 
+            margin: 0; 
+            padding: 10px 0; 
+        }
 
         .button[type="submit"] {
             padding: 10px 24px;
@@ -57,13 +77,42 @@
 
         .results {
             text-align: left;
-            margin-top: 20px;
-            padding: 0 20px;
+            margin-top: 40px;
+            padding: 20px; 
+            background-color: #ffffff; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
         }
 
         .result-message {
             font-size: 18px;
             color: #333;
+        }
+        .checkbox-group{
+            display: flex;
+            justify-content: space-around;
+            padding: 20px 150px;
+        }
+        .list-group{
+            display: flex;
+            justify-content:center;
+            flex-direction: column;
+            padding: 20px 150px;            
+        }
+        /* Top buttons layout*/
+        .top-buttons {
+            display: flex;
+            justify-content: space-around;
+        }
+        /* Buttom buttons layout*/
+        .language-selection {
+            display: flex;
+            justify-content: center; 
+            align-items: center; 
+            position:relative;
+            bottom: 20px; 
+            left: 50%;
+            transform: translateX(-50%); 
         }
         /* Language selection section*/
         .language-button {
@@ -76,22 +125,7 @@
             margin-right: 10px;
         }
         .language-button:last-child {
-            margin-right: 0; /* Remove margin for the last button */
-        }
-        /* Top buttons layout*/
-        .top-buttons {
-            display: flex;
-            justify-content: space-around;
-        }
-        /* Buttom buttons layout*/
-        .language-selection {
-            display: flex;
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically within the container */
-            position: absolute;
-            bottom: 20px; /* Distance from the bottom of the page */
-            left: 50%;
-            transform: translateX(-50%); /* Center horizontally based on its width */
+            margin-right: 0; 
         }
 
 
@@ -166,22 +200,51 @@
 {% endif %} -->
 </div>
 
-<div class="search-container">
-    <form method="GET" action="{% url 'search' %}">
-        <input type="text" id="searchInput" name="acronym" placeholder="Search..." required>
-        <button class="button" type="submit">{{languageFile.searchpage.Search}}</button>
-    </form>
-    
-    <div class="results" id="resultsContainer">
-        {% if definition %}
-            <div class="result-message">
-                <strong>{{languageFile.searchpage.Definition}}</strong> {{ definition }}
+<div class="search-container-root">
+    <div class="search-container">
+        <p class="title">{{languageFile.searchpage.Glossary}}</p>
+        <form method="GET" action="{% url 'search' %}">
+            <input type="text" id="searchInput" name="acronym" placeholder="Search..." required>
+            <button class="button" type="submit">{{languageFile.searchpage.Search}}</button>
+
+            <div class="checkbox-group">
+                <div>
+                    <label for="lang_eng">{{languageFile.addUser.English}}</label>
+                    <input type="radio" id="lang_eng" name="languages" value="Eng" checked>
+                </div>
+                <div>
+                    <label for="lang_fr">{{languageFile.addUser.French}}</label>
+                    <input type="radio" id="lang_fr" name="languages" value="Fr">
+                </div>
+                <div>
+                    <label for="lang_de">{{languageFile.addUser.German}}</label>
+                    <input type="radio" id="lang_de" name="languages" value="De">
+                </div>
             </div>
-        {% elif message %}
-            <div class="result-message">
-                {{ message }}
+            
+            <div class="list-group">
+                <select id="industry" name="industry" required>
+                    <option value="pharma" selected>{{languageFile.define.Pharma}}</option>
+                    <option value="electrical engineering">{{languageFile.define.Electrical_Engineering}}</option>
+                    <option value="civil engineering">{{languageFile.define.Civil_Engineering}}</option>
+                    <option value="mechanical engineering">{{languageFile.define.Mechanical_Engineering}}</option>
+                </select>
             </div>
-        {% endif %}
+            
+        </form>
+                
+
+        <div class="results" id="resultsContainer">
+            {% if definition %}
+                <div class="result-message">
+                    <strong>{{languageFile.searchpage.Definition}}</strong> {{ definition }}
+                </div>
+            {% elif message %}
+                <div class="result-message">
+                    {{ message }}
+                </div>
+            {% endif %}
+        </div>
     </div>
 </div>
 

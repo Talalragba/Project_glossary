@@ -56,6 +56,11 @@ def login_view(request):
             request.session["selectedLanguage"] = user_data['selectedLanguage']
             request.session["languageFile"] = language_selection(request.session["selectedLanguage"])
             print(request.session["languageFile"])
+            request.session["UserLanguages"] = user_data['UserLanguages']
+            print("##########----------------------------------##########")
+            print(request.session["UserLanguages"])
+            print(request.session.get('UserLanguages'))
+            print("##########----------------------------------##########")
             #user_collection.update_many({}, {'$set': {'selectedLanguage': 'fr'}})
 
             ###############################################################
@@ -96,7 +101,10 @@ def search_view(request):
         message = None
         definition = None
         acronym = request.GET.get('acronym')
-        docDef = eng_definition_collection.find_one({"Acronym": acronym})
+        industry = request.GET.get('industry')
+        language = request.GET.get('languages')
+
+        docDef = eng_definition_collection.find_one({"Acronym": acronym, "Industry": industry, "Language":language, "ActualDefinition":True})
 
         if docDef:
             definition = docDef["Definition"]  
@@ -131,10 +139,13 @@ def define_view(request):
         acronym = request.POST.get('acronym')
         definition = request.POST.get('definition')
         source = request.POST.get('source')
-        industry = request.POST.getlist('industry')  
+        industry = request.POST.get('industry')
+        #industry = request.POST.getlist('industry')  
         definition_submission_date = timezone.now()  
         definition_author = request.session.get("username")
         definition_author_id = request.session.get("logedUserId")
+        language = request.POST.get("language")
+
         
         # Add to MongoDB
         insertedDraft = eng_definition_draft_collection.insert_one({
@@ -142,6 +153,7 @@ def define_view(request):
             "Definition": definition,
             "Source": source,
             "Industry": industry,
+            "Language": language,
             "DefinitionSubmissionDate": definition_submission_date,
             "DefinitionAuthor": definition_author,
             "DefinitionAuthorID": definition_author_id,
@@ -318,12 +330,14 @@ def drafts_view(request):
     if request.session["userRole"] == "reviewer" :
         drafts = list(eng_definition_draft_collection.find({
             "Status": "inReview",
+            "Language": {"$in": request.session["UserLanguages"]},
             "DefinitionAuthorID": {"$nin": [request.session.get('logedUserId')]},
             "Reviewers": {"$nin": [request.session.get('logedUserId')]}
         }))
         return render(request, 'appwmlg/drafts.html', {'drafts': drafts, 'languageFile': request.session["languageFile"]})        
     else : 
         drafts = list(eng_definition_draft_collection.find({
+            "Language": {"$in": request.session["UserLanguages"]},
             "Approvers": {"$nin": [request.session.get('logedUserId')]},
             "DefinitionAuthorID": {"$nin": [request.session.get('logedUserId')]},
             "Reviewers": {"$nin": [request.session.get('logedUserId')]}
@@ -393,7 +407,7 @@ def approve_draft_view(request, DraftID):
         definition_date = timezone.now()
         
         count = eng_definition_collection.count_documents({"Acronym": draft['Acronym']})
-        dfs = eng_definition_collection.find({"Acronym": draft['Acronym']}) # The existing definition with the same acronym
+        dfs = eng_definition_collection.find({"Acronym": draft['Acronym'], "Language":draft['Language']}) # The existing definition with the same acronym
 
         for df in dfs : 
             eng_definition_collection.update_one({"DefinitionID": df['DefinitionID']}, {"$set": {"ActualDefinition": False}})
@@ -403,6 +417,7 @@ def approve_draft_view(request, DraftID):
             "Definition": draft['Definition'],
             "Source": draft['Source'],
             "Industry": draft['Industry'],
+            "Language": draft['Language'],
             "DefinitionDate": definition_date,
             "DefinitionAuthor": draft['DefinitionAuthor'],
             "DefinitionAuthorID": draft['DefinitionAuthorID'],      

@@ -28,7 +28,8 @@
 
         .form-container h2 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 40px;
+            font-style: italic;
         }
 
         .form-container label {
@@ -116,7 +117,8 @@
 
 <div class="form-container-root">
     <div class="form-container">
-        <h1>{{languageFile.user.User_Details_for}} {{ user.UserName }}</h1>
+        <h2>{{languageFile.user.User_Details_for}}</h2>
+        <p><strong>{{languageFile.user.UserName}}</strong> {{ user.UserName }}</p>
         <form method="POST" action="{% url 'userUpdate' user.UserID %}">
             {% csrf_token %}
             <label for="email">{{languageFile.user.Email}}</label>

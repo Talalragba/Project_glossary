@@ -19,7 +19,7 @@
         "German": "Deutsch",
         "Email": "E-Mail :",
         "Born_date": "Geburtsdatum :",
-        "Add": "Hinzufügen :"
+        "Add": "Hinzufügen"
     },
     "define": {
         "Home":"Startseite",
@@ -40,7 +40,7 @@
         "Home":"Startseite",
         "Notifications": "Benachrichtigungen",
         "Logout": "Abmelden",
-        "Delete_Draft": "Entwurf löschen :",
+        "Delete_Draft": "Entwurf löschen",
         "Why_are_you_deleting_this_draft": "Warum löschen Sie diesen Entwurf?",
         "Definition_is_not_complete": "Definition ist nicht vollständig",
         "Definition_already_exists": "Definition existiert bereits",
@@ -96,15 +96,16 @@
         "Users": "Benutzer",
         "Notifications": "Benachrichtigungen",
         "Add_definition": "Definition hinzufügen",
-        "Pending_definitions": "Ausstehende Definitionen",
+        "Pending_definitions": "Ausstehende definitionen",
         "Search": "Suche",
         "Definition": "Definition :"
     },
     "user": {
         "Home":"Startseite",
         "User": "Benutzer",
+        "UserName": "Benutzername :",
         "Logout": "Abmelden",
-        "User_Details_for": "Benutzerdetails für :",
+        "User_Details_for": "Benutzerdetails",
         "Email": "E-Mail :",
         "Role": "Role :",
         "Admin": "Administrator",

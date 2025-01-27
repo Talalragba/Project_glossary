@@ -19,7 +19,7 @@
         "German": "German",
         "Email": "Email :",
         "Born_date": "Born date :",
-        "Add": "Add :"
+        "Add": "Add"
     }, 
     "define" :{
         "Home":"Home",
@@ -40,7 +40,7 @@
         "Home":"Home",
         "Notifications": "Notifications",
         "Logout": "Logout",
-        "Delete_Draft": "Delete Draft :",
+        "Delete_Draft": "Delete draft",
         "Why_are_you_deleting_this_draft": "Why are you deleting this draft?",
         "Definition_is_not_complete": "Definition is not complete",
         "Definition_already_exists": "Definition already exists",
@@ -48,24 +48,24 @@
     },
     "draft" :{
         "Home":"Home",
-        "Definition_Draft": "Definition Draft",
+        "Definition_Draft": "Definition draft",
         "Logout": "Logout",
         "Acronym": "Acronym :",
         "Definition": "Definition :",
         "Source": "Source :",
         "Definition_Submission_Date": "Definition Submission Date :",
         "Autor_Name":"Autor Name :",
-        "Definition_Language":"Definition Language :",
+        "Definition_Language":"Definition language :",
         "Industry":"Industry :",
-        "Approve_Draft": "Approve Draft",
-        "Delete_Draft": "Delete Draft"
+        "Approve_Draft": "Approve draft",
+        "Delete_Draft": "Delete draft"
 
     },
     "drafts" :{
         "Home":"Home",
-        "Definitions_Draft": "Definitions Draft",
+        "Definitions_Draft": "Definitions draft",
         "Logout": "Logout",
-        "Draft_List": "Draft List"   
+        "Draft_List": "Draft list"   
 
     },
     "index" :{
@@ -90,7 +90,7 @@
         "Home":"Home",
         "Definition": "Definition",
         "Logout": "Logout",
-        "Notifications_List": "Notifications List"
+        "Notifications_List": "Notifications list"
     },
     "searchpage" :{
         "Home":"Home",
@@ -108,8 +108,9 @@
     "user" :{
         "Home":"Home",
         "User": "User",
+        "UserName": "Username :",
         "Logout": "Logout",
-        "User_Details_for": "User Details for :",
+        "User_Details_for": "User details",
         "Email": "Email :",
         "Role": "Role :",
         "Admin": "Admin",
@@ -119,15 +120,15 @@
         "Visitor": "Visitor",
         "Update": "Update",
         "Languages": "Languages :",
-        "Hire_Date": "Hire Date :",
-        "Born_Date": "Born Date :",
-        "User_Role": "User Role :",
-        "Delete_User": "Delete User"
+        "Hire_Date": "Hire date :",
+        "Born_Date": "Born date :",
+        "User_Role": "User role :",
+        "Delete_User": "Delete user"
 
     },
     "users" :{
         "Home":"Home",
-        "Users_List": "Users List",
+        "Users_List": "Users list",
         "Logout": "Logout",
         "Add_new_user": "Add new user"
     }  

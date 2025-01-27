@@ -112,14 +112,14 @@
 
 <div class="form-container-root">
     <div class="form-container">
-        <h1>{{languageFile.deleteDraft.Delete_Draft}} {{ draft.Acronym }}</h1>
+        <!-- <h1>{{languageFile.deleteDraft.Delete_Draft}} : {{ draft.Acronym }}</h1> -->
         <form method="post">
             {% csrf_token %}
             <label for="reason">{{languageFile.deleteDraft.Why_are_you_deleting_this_draft}}</label><br>
             <select name="reason" id="reason" required>
-                <option value="definition is not complete">{{languageFile.deleteDraft.Definition_is_not_complete}}</option>
-                <option value="definition already exists">{{languageFile.deleteDraft.Definition_already_exists}}</option>
-                <option value="other">{{languageFile.deleteDraft.Other}}</option>
+                <option value="Your draft was deleted because the definition you provided is incomplete">{{languageFile.deleteDraft.Definition_is_not_complete}}</option>
+                <option value="Your draft was deleted because the definition you provided already exists">{{languageFile.deleteDraft.Definition_already_exists}}</option>
+                <option value="Your draft was deleted because of other reason">{{languageFile.deleteDraft.Other}}</option>
             </select><br><br>
             <button type="submit">{{languageFile.deleteDraft.Delete_Draft}}</button>
         </form>

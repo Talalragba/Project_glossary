@@ -19,7 +19,7 @@
         "German": "Allemand",
         "Email": "Email :",
         "Born_date": "Date de naissance :",
-        "Add": "Ajouter :"
+        "Add": "Ajouter"
     },
     "define": {
         "Home":"Accueil",
@@ -40,7 +40,7 @@
         "Home":"Accueil",
         "Notifications": "Notifications",
         "Logout": "Déconnexion",
-        "Delete_Draft": "Supprimer le brouillon :",
+        "Delete_Draft": "Supprimer le brouillon",
         "Why_are_you_deleting_this_draft": "Pourquoi supprimez-vous ce brouillon ?",
         "Definition_is_not_complete": "La définition n'est pas complète",
         "Definition_already_exists": "La définition existe déjà",
@@ -103,8 +103,9 @@
     "user": {
         "Home":"Accueil",
         "User": "Utilisateur",
+        "UserName": "Nome de utilisateur :",
         "Logout": "Déconnexion",
-        "User_Details_for": "Détails de l'utilisateur pour :",
+        "User_Details_for": "Détails de l'utilisateur",
         "Email": "Email :",
         "Role": "Role :",
         "Admin": "Administrateur",

@@ -32,6 +32,7 @@
             font-size: 24px; /* Larger font for the heading */
             margin-bottom: 20px; /* Space below the heading */
             color: #333; /* Darker color for contrast */
+            font-style: italic;
         }
 
         .page-content ul {
@@ -108,12 +109,24 @@
 
 <div class="page-content-root">
     <div class="page-content">
-        <h1>{{languageFile.drafts.Draft_List}} :</h1>
-        <ul>
+        <h1>{{languageFile.drafts.Draft_List}}</h1>
+            {% if drafts %}
+                <ul>
+                    {% for draft in drafts %}
+                    <li><a href="{% url 'draft' draft.DraftID %}">{{ draft.Acronym }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div>
+                    <p>None</p>
+                </div>
+            {% endif %}
+
+        <!-- <ul>
             {% for draft in drafts %}
             <li><a href="{% url 'draft' draft.DraftID %}">{{ draft.Acronym }}</a></li>
             {% endfor %}
-        </ul>
+        </ul> -->
     </div>    
 </div>
 

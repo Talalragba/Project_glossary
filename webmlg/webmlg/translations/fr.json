@@ -98,7 +98,8 @@
         "Add_definition": "Ajouter une définition",
         "Pending_definitions": "Définitions en attente",
         "Search": "Recherche",
-        "Definition": "Définition :"
+        "Definition": "Définition :",
+        "Source":"Source :"
     },
     "user": {
         "Home":"Accueil",

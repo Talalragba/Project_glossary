@@ -102,7 +102,8 @@
         "Add_definition": "Add definition",
         "Pending_definitions": "Pending definitions",
         "Search": "Search",
-        "Definition": "Definition :"
+        "Definition": "Definition :",
+        "Source":"Source :"
 
     },
     "user" :{

@@ -17,11 +17,17 @@ from django.utils import timezone
 #################### Connect to MongoDB ####################
 client = MongoClient('mongodb://localhost:27017/')
 dbft = client['dbft']
-user_collection = dbft['userCollection']
-eng_definition_draft_collection = dbft['engDefinitionDraftCollection']
-eng_definition_collection = dbft['engDefinitionCollection'] 
-user_credentials = dbft['userCredentials']
+#user_collection = dbft['userCollection']
+#eng_definition_draft_collection = dbft['engDefinitionDraftCollection']
+#eng_definition_collection = dbft['engDefinitionCollection'] 
+#user_credentials = dbft['userCredentials']
 #db.engDefinitionDraftCollection.deleteMany({}) to clear a collection in the db using MongoDB shell
+
+user_collection = dbft['userCollection']
+user_credentials = dbft['userCredentials']
+definition_draft_collection = dbft['definitionDraftCollection']
+definition_collection = dbft['definitionCollection']
+trails = dbft['trails']
 
 ############# To read json files stored locally ############
 import json
@@ -104,10 +110,11 @@ def search_view(request):
         industry = request.GET.get('industry')
         language = request.GET.get('languages')
 
-        docDef = eng_definition_collection.find_one({"Acronym": acronym, "Industry": industry, "Language":language, "ActualDefinition":True})
+        docDef = definition_collection.find_one({"Acronym": acronym, "Industry": industry, "Language":language, "ActualDefinition":True})
 
         if docDef:
-            definition = docDef["Definition"]  
+            #definition = docDef["Definition"]
+            definition = docDef  
         else:
             message = "The acronym doesn't exist."
 
@@ -148,7 +155,7 @@ def define_view(request):
 
         
         # Add to MongoDB
-        insertedDraft = eng_definition_draft_collection.insert_one({
+        insertedDraft = definition_draft_collection.insert_one({
             "Acronym": acronym,
             "Definition": definition,
             "Source": source,
@@ -164,7 +171,7 @@ def define_view(request):
             "Status" : "inReview"           
         })
         insertedDraft_id = insertedDraft.inserted_id
-        eng_definition_draft_collection.update_one({"_id": insertedDraft_id}, {"$set": {"DraftID": str(insertedDraft_id)}}) 
+        definition_draft_collection.update_one({"_id": insertedDraft_id}, {"$set": {"DraftID": str(insertedDraft_id)}}) 
 
         
         return redirect('search') 
@@ -211,6 +218,7 @@ def addUser_view(request):
             "UserLanguages": user_languages,
             "UserEmail": user_email,
             "BornDate": born_date,
+            "selectedLanguage": "en",
             "Notifications": notification
         })
 
@@ -328,7 +336,7 @@ def drafts_view(request):
     if request.session["userRole"] not in ["approver", "reviewer"] :
         return redirect("search")
     if request.session["userRole"] == "reviewer" :
-        drafts = list(eng_definition_draft_collection.find({
+        drafts = list(definition_draft_collection.find({
             "Status": "inReview",
             "Language": {"$in": request.session["UserLanguages"]},
             "DefinitionAuthorID": {"$nin": [request.session.get('logedUserId')]},
@@ -336,7 +344,7 @@ def drafts_view(request):
         }))
         return render(request, 'appwmlg/drafts.html', {'drafts': drafts, 'languageFile': request.session["languageFile"]})        
     else : 
-        drafts = list(eng_definition_draft_collection.find({
+        drafts = list(definition_draft_collection.find({
             "Language": {"$in": request.session["UserLanguages"]},
             "Approvers": {"$nin": [request.session.get('logedUserId')]},
             "DefinitionAuthorID": {"$nin": [request.session.get('logedUserId')]},
@@ -361,7 +369,7 @@ def draft_view(request, DraftID):
     if request.session["userRole"] not in ["approver", "reviewer"] :
         return redirect("search")
     else :
-        draft = eng_definition_draft_collection.find_one({"DraftID": DraftID})
+        draft = definition_draft_collection.find_one({"DraftID": DraftID})
         return render(request, 'appwmlg/draft.html', {'draft': draft, 'languageFile': request.session["languageFile"]})
 
 '''######################################################################
@@ -388,7 +396,7 @@ def approve_draft_view(request, DraftID):
     if request.session["userRole"] not in ["approver", "reviewer"] :
         return redirect("search")
     
-    draft = eng_definition_draft_collection.find_one({"DraftID": DraftID})
+    draft = definition_draft_collection.find_one({"DraftID": DraftID})
  
     # in any case by accedent the approver or the reviewer know how to write the url of a draft directly into the browser so they can't approve two or more times the same draft.
     if (request.session.get("logedUserId") in draft['Approvers']) or (request.session.get("logedUserId") in draft['Reviewers']) or (request.session.get("logedUserId") in draft['DefinitionAuthorID']) : 
@@ -397,22 +405,22 @@ def approve_draft_view(request, DraftID):
     if draft['ReviewersNumber'] != 2 :
         reviewers_number = draft['ReviewersNumber'] + 1
         reviewer = draft['Reviewers'] + [request.session.get("logedUserId")]
-        eng_definition_draft_collection.update_one({"DraftID": DraftID}, {"$set": {"Reviewers": reviewer, "ReviewersNumber": reviewers_number}})
+        definition_draft_collection.update_one({"DraftID": DraftID}, {"$set": {"Reviewers": reviewer, "ReviewersNumber": reviewers_number}})
         if reviewers_number == 2 :
-            eng_definition_draft_collection.update_one({"DraftID": DraftID}, {"$set": {"Status": "waitingForApproval"}})
+            definition_draft_collection.update_one({"DraftID": DraftID}, {"$set": {"Status": "waitingForApproval"}})
         return redirect('search')
     else :
         approvers_number = draft['ApproversNumber'] + 1
         approver = draft['Approvers'] + [request.session.get("logedUserId")]              
         definition_date = timezone.now()
         
-        count = eng_definition_collection.count_documents({"Acronym": draft['Acronym']})
-        dfs = eng_definition_collection.find({"Acronym": draft['Acronym'], "Language":draft['Language']}) # The existing definition with the same acronym
+        count = definition_collection.count_documents({"Acronym": draft['Acronym']})
+        dfs = definition_collection.find({"Acronym": draft['Acronym'], "Language":draft['Language']}) # The existing definition with the same acronym
 
         for df in dfs : 
-            eng_definition_collection.update_one({"DefinitionID": df['DefinitionID']}, {"$set": {"ActualDefinition": False}})
+            definition_collection.update_one({"DefinitionID": df['DefinitionID']}, {"$set": {"ActualDefinition": False}})
         
-        insertedDf = eng_definition_collection.insert_one({
+        insertedDf = definition_collection.insert_one({
             "Acronym": draft['Acronym'],
             "Definition": draft['Definition'],
             "Source": draft['Source'],
@@ -427,7 +435,7 @@ def approve_draft_view(request, DraftID):
             "DefinitionVersion": count+1
         })
         insertedDf_id = insertedDf.inserted_id
-        eng_definition_collection.update_one({"_id": insertedDf_id}, {"$set": {"DefinitionID": str(insertedDf_id)}}) 
+        definition_collection.update_one({"_id": insertedDf_id}, {"$set": {"DefinitionID": str(insertedDf_id)}}) 
         
         title = f"Your submitted draft  {draft['Acronym']} is live now"
         user_collection.update_one({"UserID": draft['DefinitionAuthorID']}, {"$push": {"Notifications":[{
@@ -435,7 +443,7 @@ def approve_draft_view(request, DraftID):
             "message": "You definition has been approved",
             "timestamp": timezone.now(),
             "read": False}]}})
-        eng_definition_draft_collection.delete_one({"DraftID": DraftID})
+        definition_draft_collection.delete_one({"DraftID": DraftID})
         return redirect('search')
 
 #################### This is the delete draft view ####################
@@ -455,13 +463,13 @@ def delete_draft_view(request, DraftID):
     if request.session["userRole"] not in ["approver", "reviewer"] :
         return redirect("search")
     
-    draft = eng_definition_draft_collection.find_one({"DraftID": DraftID})
+    draft = definition_draft_collection.find_one({"DraftID": DraftID})
     if request.method == "POST":
         authorID = draft['DefinitionAuthorID']
         reason = request.POST.get("reason") 
         title = f"Your submitted draft  {draft['Acronym']} was rejected"
 
-        eng_definition_draft_collection.delete_one({"DraftID": DraftID})
+        definition_draft_collection.delete_one({"DraftID": DraftID})
         user_collection.update_one({"UserID": authorID}, {"$push": {"Notifications":[{
             "title": title,
             "message": reason,

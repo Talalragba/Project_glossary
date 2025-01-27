@@ -230,14 +230,15 @@
                     <option value="mechanical engineering">{{languageFile.define.Mechanical_Engineering}}</option>
                 </select>
             </div>
-            
+
         </form>
                 
 
         <div class="results" id="resultsContainer">
             {% if definition %}
                 <div class="result-message">
-                    <strong>{{languageFile.searchpage.Definition}}</strong> {{ definition }}
+                    <strong>{{languageFile.searchpage.Definition}}</strong><br> {{ definition.Definition }} <br><br>
+                    <strong>{{languageFile.searchpage.Source}}</strong><br> {{ definition.Source }}
                 </div>
             {% elif message %}
                 <div class="result-message">

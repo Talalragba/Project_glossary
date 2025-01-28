@@ -21,6 +21,13 @@ Ensure the following are installed on your system:
 - **MongoDB** (configured and running on `localhost:27017`)
 - **pip** (Python package manager)
 
+To install MongoDB, you can visit the official MongoDB installation guide for Ubuntu [here](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/). Once MongoDB is installed, start the service with the following command:
+
+```bash
+sudo systemctl start mongod
+sudo systemctl enable mongod
+sudo systemctl status mongod # to check that mongodb is running properly
+```
 ## Installation
 Follow these steps to set up the application:
 
@@ -40,6 +47,7 @@ source venv/bin/activate   # On Windows, use `venv\Scripts\activate`
 ### Install Dependencies
 Install the required Python packages:
 ```bash
+cd webmlg
 pip install -r requirements.txt
 ```
 

@@ -32,6 +32,7 @@ trails = dbft['trails']
 ############# To read json files stored locally ############
 import json
 import os
+from pathlib import Path
 
 #################### This is the login view ####################
 #In this view we get the username and password from the login page
@@ -511,16 +512,31 @@ def notification_view(request):
     
 #################### language selection function  ######################
 
+# def language_selection(selectedLanguage):
+#     if selectedLanguage == "en" :
+#         with open('/home/vboxuser/Project_glossary/webmlg/webmlg/translations/eng.json', 'r') as file :
+#             translations = json.load(file)
+#     elif selectedLanguage == "fr" :
+#         with open('/home/vboxuser/Project_glossary/webmlg/webmlg/translations/fr.json', 'r') as file :
+#             translations = json.load(file)
+#     else :
+#         with open('/home/vboxuser/Project_glossary/webmlg/webmlg/translations/de.json', 'r') as file :
+#             translations = json.load(file)
+#     return translations
+
+
 def language_selection(selectedLanguage):
-    if selectedLanguage == "en" :
-        with open('/home/vboxuser/Project_glossary/webmlg/webmlg/translations/eng.json', 'r') as file :
-            translations = json.load(file)
-    elif selectedLanguage == "fr" :
-        with open('/home/vboxuser/Project_glossary/webmlg/webmlg/translations/fr.json', 'r') as file :
-            translations = json.load(file)
-    else :
-        with open('/home/vboxuser/Project_glossary/webmlg/webmlg/translations/de.json', 'r') as file :
-            translations = json.load(file)
+    base_dir = Path(__file__).resolve().parent / "translations"
+    if selectedLanguage == "en":
+        file_path = base_dir / "eng.json"
+    elif selectedLanguage == "fr":
+        file_path = base_dir / "fr.json"
+    else:
+        file_path = base_dir / "de.json"
+
+    with open(file_path, 'r') as file:
+        translations = json.load(file)
+
     return translations
 
 ####################   ######################

@@ -16,11 +16,11 @@ def create_initial_database():
 
     # Initial user details
     username = "Admin"
-    hire_date = "23/08/1990"
+    hire_date = "23-08-1990"
     user_role = "admin"
     user_languages = ['Eng', 'Fr', 'De']
     user_email = "khalid.khalyl.12@gmail.com"
-    born_date = "23/08/1990"
+    born_date = "23-08-1990"
     notification = [[{
                 "title": "Account creation",
                 "message": "Your account is activated now",

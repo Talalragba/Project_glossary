@@ -86,6 +86,29 @@ Project_glossary/
     |— manage.py            # Django management script
 ```
 
+## Email Configuration  
+
+To enable email functionality in this application, you need to configure the email settings in the `settings.py` file.  
+
+### Steps to Configure Email:
+
+1. Open `webmlg/settings.py`.  
+2. Locate the **Email settings** section and add your email credentials:  
+
+   ```python
+   # Email settings
+   EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+   EMAIL_HOST = 'smtp.gmail.com'  # Use your email provider's SMTP server
+   EMAIL_PORT = 587
+   EMAIL_USE_TLS = True
+   EMAIL_HOST_USER = 'your-email@gmail.com'  # Replace with your email
+   EMAIL_HOST_PASSWORD = 'your-email-password'  # Replace with your email password or app password
+   ```
+
+3. If you are using **Gmail**, you may need to:
+   - Enable **"Less Secure Apps"** in your Google Account settings (not recommended for production), or  
+   - Generate an **App Password** from [Google Account Security](https://myaccount.google.com/security).
+
 ## Usage
 ### Admin Login
 1. Use the credentials provided during setup to log in as the admin.
@@ -110,4 +133,3 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 ## Contact
 For any questions or issues, contact:
 - **Email**: khalid.khalyl.12@gmail.com
-

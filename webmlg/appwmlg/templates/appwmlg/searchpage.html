@@ -137,7 +137,8 @@
 {% if user_role == 'admin' %}
     <div class="top-buttons-group-1">
         <button class="button" onclick="location.href='{% url 'users' %}'">{{languageFile.searchpage.Users}}</button>
-        <button class="button" onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>    
+        <button class="button" onclick="location.href='{% url 'notifications' %}'">{{languageFile.searchpage.Notifications}}</button>
+        <button class="button" onclick="location.href='{% url 'trails' %}'">{{languageFile.searchpage.Trails}}</button>     
     </div>
     <div class="top-buttons-group-2">
         <button class="button" onclick="location.href='{% url 'logout' %}'">{{languageFile.searchpage.Logout}}</button>

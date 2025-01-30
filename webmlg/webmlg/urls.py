@@ -19,6 +19,8 @@ from appwmlg.views import notifications_view
 from appwmlg.views import notification_view
 ##########
 from appwmlg.views import changeLanguage_view
+##########
+from appwmlg.views import trails_view
 
 
 urlpatterns = [
@@ -44,6 +46,7 @@ urlpatterns = [
     path('notification/', notification_view, name='notification'),
     ######################################
     path('changeLanguage/', changeLanguage_view, name='changeLanguage'),
-
+    ######################################
+    path('trails/', trails_view, name='trails'),
 
 ]

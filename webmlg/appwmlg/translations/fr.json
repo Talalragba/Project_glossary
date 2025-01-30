@@ -99,7 +99,8 @@
         "Pending_definitions": "Définitions en attente",
         "Search": "Recherche",
         "Definition": "Définition :",
-        "Source":"Source :"
+        "Source":"Source :",
+        "Trails": "Journaux"
     },
     "user": {
         "Home":"Accueil",
@@ -126,5 +127,12 @@
         "Users_List": "Liste des utilisateurs",
         "Logout": "Déconnexion",
         "Add_new_user": "Ajouter un nouvel utilisateur"
+    },    
+    "trails": {
+        "Home": "Accueil",
+        "Audit_Logs": "Journaux d'audit",
+        "Logs_list": "Liste des journaux",
+        "Logout": "Déconnexion"
     }
+
 }

@@ -99,7 +99,9 @@
         "Pending_definitions": "Ausstehende definitionen",
         "Search": "Suche",
         "Definition": "Definition :",
-        "Source":"Quelle :"
+        "Source":"Quelle :",
+        "Trails": "Protokolle"
+
     },
     "user": {
         "Home":"Startseite",
@@ -126,5 +128,12 @@
         "Users_List": "Benutzerliste",
         "Logout": "Abmelden",
         "Add_new_user": "Neuen Benutzer hinzufügen"
+    },
+    "trails": {
+        "Home": "Startseite",
+        "Audit_Logs": "Prüfprotokolle",
+        "Logs_list": "Protokollliste",
+        "Logout": "Abmelden"
     }
+
 }

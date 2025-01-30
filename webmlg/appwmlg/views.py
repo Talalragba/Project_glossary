@@ -27,7 +27,7 @@ user_collection = dbft['userCollection']
 user_credentials = dbft['userCredentials']
 definition_draft_collection = dbft['definitionDraftCollection']
 definition_collection = dbft['definitionCollection']
-trails = dbft['trails']
+trails_collection = dbft['trailsCollection']
 
 ############# To read json files stored locally ############
 import json
@@ -174,6 +174,11 @@ def define_view(request):
         insertedDraft_id = insertedDraft.inserted_id
         definition_draft_collection.update_one({"_id": insertedDraft_id}, {"$set": {"DraftID": str(insertedDraft_id)}}) 
 
+        trails_collection.insert_one({
+            "Username": request.session.get("username"),
+            "UserID": request.session.get("logedUserId"),
+            "Message": "Has submitted a new definition for approval for (" + acronym + ") at " + timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+        })
         
         return redirect('search') 
     
@@ -241,6 +246,12 @@ def addUser_view(request):
             fail_silently=False,
         )
 
+        trails_collection.insert_one({
+            "Username": request.session.get("username"),
+            "UserID": request.session.get("logedUserId"),
+            "Message": "Has create a new account for (" + username + ") at " + timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+        })
+
         return redirect('search')  # Redirect after submission
     else :
         return render(request, 'appwmlg/addUser.html', {'languageFile': request.session["languageFile"]})
@@ -303,6 +314,14 @@ def user_update_view(request, UserID):
 
         # Update the user in the database
         user_collection.update_one({"UserID": UserID}, {"$set": {"UserRole": newRole, "UserEmail": newEmail}})
+        user = user_collection.find_one({"UserID": UserID})
+
+        trails_collection.insert_one({
+            "Username": request.session.get("username"),
+            "UserID": request.session.get("logedUserId"),
+            "Message": "Has updated (" + user['UserName'] + ") data at " + timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+        })
+        
         return redirect('search') 
 
 #################### This is the user delete view ####################
@@ -320,7 +339,13 @@ def user_delete_view(request, UserID):
     if request.session["userRole"] not in ["admin"] :
         return redirect("search")   
     if request.method == 'POST':
+        user = user_collection.find_one({"UserID": UserID})
         user_collection.delete_one({"UserID": UserID})
+        trails_collection.insert_one({
+            "Username": request.session.get("username"),
+            "UserID": request.session.get("logedUserId"),
+            "Message": "Has deleted (" + user['UserName'] + ") account from the system at " + timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+        })        
         return redirect('search')
 
 #################### This is the drafts view ####################
@@ -407,6 +432,13 @@ def approve_draft_view(request, DraftID):
         reviewers_number = draft['ReviewersNumber'] + 1
         reviewer = draft['Reviewers'] + [request.session.get("logedUserId")]
         definition_draft_collection.update_one({"DraftID": DraftID}, {"$set": {"Reviewers": reviewer, "ReviewersNumber": reviewers_number}})
+
+        trails_collection.insert_one({
+            "Username": request.session.get("username"),
+            "UserID": request.session.get("logedUserId"),
+            "Message": "Has reviewed the (" + draft['Acronym'] + ") definition at " + timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+        }) 
+
         if reviewers_number == 2 :
             definition_draft_collection.update_one({"DraftID": DraftID}, {"$set": {"Status": "waitingForApproval"}})
         return redirect('search')
@@ -420,7 +452,13 @@ def approve_draft_view(request, DraftID):
 
         for df in dfs : 
             definition_collection.update_one({"DefinitionID": df['DefinitionID']}, {"$set": {"ActualDefinition": False}})
-        
+
+        trails_collection.insert_one({
+            "Username": request.session.get("username"),
+            "UserID": request.session.get("logedUserId"),
+            "Message": "Has approved the (" + draft['Acronym'] + ") definition at " + timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+        }) 
+
         insertedDf = definition_collection.insert_one({
             "Acronym": draft['Acronym'],
             "Definition": draft['Definition'],
@@ -476,6 +514,12 @@ def delete_draft_view(request, DraftID):
             "message": reason,
             "timestamp": timezone.now(),
             "read": False}]}})
+        
+        trails_collection.insert_one({
+            "Username": request.session.get("username"),
+            "UserID": request.session.get("logedUserId"),
+            "Message": "Has deleted the (" + draft['Acronym'] + ") definition at " + timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+        }) 
 
         return redirect('search')
 
@@ -556,3 +600,22 @@ def changeLanguage_view(request):
     request.session["languageFile"] = language_selection(request.session["selectedLanguage"])
   
     return redirect(pageName) 
+
+
+#################### This is the notification view ####################
+#1) to pevent non authenticated users to get into this view directly from the url
+#we first check the the session's logedUser variable if it is a False value we redirect
+#to the login page.
+#2) in this view instead of passing a paramter to the view we used another technique
+#which is '?message={{ notification.message }}' in the notifications page then we passed
+#once again the same message to notification page in order to be displayed correctly
+########################################################################
+def trails_view(request):
+    if request.session.get('logedUser') != True:
+        return redirect('login')
+    
+    if request.session["userRole"] not in ["admin"]:
+        return redirect("search")
+    else : 
+        trails = list(trails_collection.find()) 
+        return render(request, 'appwmlg/trails.html', {'trails': trails, 'languageFile': request.session["languageFile"]})   

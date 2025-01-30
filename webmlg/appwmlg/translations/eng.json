@@ -103,7 +103,8 @@
         "Pending_definitions": "Pending definitions",
         "Search": "Search",
         "Definition": "Definition :",
-        "Source":"Source :"
+        "Source":"Source :",
+        "Trails":"Logs"
 
     },
     "user" :{
@@ -132,7 +133,12 @@
         "Users_List": "Users list",
         "Logout": "Logout",
         "Add_new_user": "Add new user"
-    }  
-    
+    },
+    "trails" :{
+        "Home":"Home",
+        "Audit_Logs": "Audit Logs",
+        "Logs_list": "Logs list",
+        "Logout": "Logout"
+    }        
 }
   
